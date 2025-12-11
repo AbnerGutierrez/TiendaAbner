@@ -11,6 +11,7 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
+    $tipoUse = auth()->user()->id_type;
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -21,3 +22,4 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+require __DIR__.'/buy.php';
