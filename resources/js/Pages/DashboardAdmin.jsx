@@ -1,19 +1,20 @@
 import MainProducto from '@/Components/Sections/MainProducto';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
-
-export default function Dashboard() {
+import AuthenticatedAdminLayout from '@/Layouts/AuthenticatedAdminLayout';
+export default function DashboardAdmin() {
     return (
-        <AuthenticatedLayout
+        <AuthenticatedAdminLayout
             header={
                 <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    Dashboard cliente
+                    Dashboard de admin
                 </h2>
             }
         >
             <Head title="Inicio" />
 
-          <MainProducto/>
-        </AuthenticatedLayout>
+            loading
+
+        </AuthenticatedAdminLayout>
     );
 }

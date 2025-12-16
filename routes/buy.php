@@ -26,4 +26,10 @@ Route::prefix('buy')->name('buy.')->group(function () {
         Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
         Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
     });
+
+    // Products like admin
+    Route::middleware(['auth'])->controller(ProductController::class)->group(function(){
+        Route::post('/products/store','store')->name('products.store');
+    }); 
+
 });
