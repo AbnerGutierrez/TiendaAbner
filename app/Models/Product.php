@@ -24,4 +24,14 @@ class Product extends Model
         'created_at',
         'updated_at',
     ];
+
+    public function features()
+    {
+        return $this->hasMany(product_char::class, 'id_product');
+    }
+
+    public function advantages()
+    {
+        return $this->hasMany(advantages::class, 'id_product');
+    }
 }
