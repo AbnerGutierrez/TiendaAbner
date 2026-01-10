@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaypal } from "@fortawesome/free-brands-svg-icons";
 import AppLayout from "@/Layouts/AppLayout";
 
-export default function LandingProduct({ product }) {
+export default function DetailProduct({ product }) {
     const [mainImage, setMainImage] = useState(product.images[0] ?? null);
     const [quantity, setQuantity] = useState(1);
 

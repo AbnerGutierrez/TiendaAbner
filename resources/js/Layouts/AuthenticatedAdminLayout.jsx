@@ -73,9 +73,20 @@ export default function AuthenticatedAdminLayout({ header, children }) {
                                             Agregar productos
                                         </Dropdown.Link>
                                         <Dropdown.Link
+                                            href={route("admin.products.addFaster")}
+                                        >
+                                            Agregar rapido
+                                        </Dropdown.Link>
+                                        
+                                        <Dropdown.Link
                                             href={route("admin.products.myProducts")}
                                         >
                                             Mis productos
+                                        </Dropdown.Link>
+                                        <Dropdown.Link
+                                            href={route("admin.products.products")}
+                                        >
+                                            Mis productos2
                                         </Dropdown.Link>
                                         <Dropdown.Link
                                             href={route("logout")}
@@ -165,6 +176,11 @@ export default function AuthenticatedAdminLayout({ header, children }) {
                                 href={route("admin.products.add")}
                             >
                                 Agregar producto
+                            </ResponsiveNavLink>
+                            <ResponsiveNavLink
+                                href={route("admin.products.addFaster")}
+                            >
+                                Agregar rapido
                             </ResponsiveNavLink>
                             <ResponsiveNavLink
                             href={route("admin.products.myProducts")}

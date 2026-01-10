@@ -5,7 +5,7 @@ export default function NavBar() {
     const [open, setOpen] = useState(false);
 
     return (
-        <nav className="bg-white shadow p-4">
+        <nav className="bg-white shadow p-4 fixed top-0 left-0 w-full z-20">
             <div className="container mx-auto flex justify-between items-center">
                 {/* Logo */}
                 <h1 className="font-bold text-xl">Mi Navegador</h1>
@@ -49,6 +49,11 @@ export default function NavBar() {
                         </Link>
                     </li>
                     <li>
+                        <Link  href={route("products.showlist")} className="hover:text-black">
+                            Productos
+                        </Link>
+                    </li>
+                    <li>
                         <Link href="/register" className="hover:text-black">
                             Registrarme
                         </Link>
@@ -64,7 +69,7 @@ export default function NavBar() {
             {/* MENU MOBILE ANIMADO */}
             <div
                 className={`md:hidden overflow-hidden transition-all duration-300 ${
-                    open ? "max-h-40 opacity-100" : "max-h-0 opacity-0"
+                    open ? "max-h-60 opacity-100" : "max-h-0 opacity-0"
                 }`}
             >
                 <ul className="flex flex-col gap-3 text-gray-700 px-4 pb-4">
@@ -75,6 +80,15 @@ export default function NavBar() {
                             onClick={() => setOpen(false)}
                         >
                             Inicio
+                        </Link>
+                    </li>
+                    <li>
+                        <Link
+                           href={route("products.showlist")}
+                            className="block py-2 border-b"
+                            onClick={() => setOpen(false)}
+                        >
+                            Productos
                         </Link>
                     </li>
                     <li>

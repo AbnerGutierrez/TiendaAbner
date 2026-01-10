@@ -15,6 +15,7 @@ class Product extends Model
         'title',
         'description',
         'stock',
+        'product_type',
         'user_id',
         'active',
         'price',

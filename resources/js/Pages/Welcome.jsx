@@ -6,7 +6,6 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
     return (
         <>
             <AppLayout>
-                <h1 className="text-2xl font-bold">Welcome</h1>
                 <WelcomeS/>
             </AppLayout>
         </>

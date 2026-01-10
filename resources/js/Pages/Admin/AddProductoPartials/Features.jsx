@@ -1,99 +1,104 @@
-import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
+import InputError from "@/Components/InputError";
 
 export default function Features({ data, errors, setData }) {
-    const addFeature = () => {
-        setData("features", [
-            ...data.features,
-            { text: "", image: null, preview: null },
-        ]);
+    const features = data.features;
+
+    const addItem = () => {
+        if (features.items.length >= 4) return;
+
+        setData("features", {
+            ...features,
+            items: [...features.items, { title: "", description: "" }],
+        });
     };
 
-    const updateText = (index, value) => {
-        const updated = [...data.features];
-        updated[index].text = value;
-        setData("features", updated);
+    const removeItem = (index) => {
+        if (features.items.length <= 1) return;
+
+        const newItems = features.items.filter((_, i) => i !== index);
+
+        setData("features", {
+            ...features,
+            items: newItems,
+        });
     };
 
-    const updateImage = (index, file) => {
-        const updated = [...data.features];
-        updated[index].image = file;
-        updated[index].preview = file ? URL.createObjectURL(file) : null;
+    const updateItem = (index, field, value) => {
+        const newItems = features.items.map((item, i) =>
+            i === index ? { ...item, [field]: value } : item
+        );
 
-        setData("features", updated);
+        setData("features", {
+            ...features,
+            items: newItems,
+        });
     };
 
-    const removeFeature = (index) => {
-        const updated = data.features.filter((_, i) => i !== index);
-        setData("features", updated);
+    const handleImage = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        setData("features", {
+            ...features,
+            image: file,
+            preview: URL.createObjectURL(file),
+        });
     };
 
     return (
-        <div className="mt-6">
-            <InputLabel value="Características del producto" />
+        <div className="space-y-6">
+            {/* IMAGEN */}
+            <div>
+                <InputLabel value="Imagen de características" />
+                <input type="file" accept="image/*" onChange={handleImage} />
 
-            <div className="space-y-4 mt-3">
-                {data.features.map((feature, index) => (
-                    <div key={index} className="flex items-center gap-3">
-                        {/* INPUT TEXTO */}
+                {features.preview && (
+                    <img
+                        src={features.preview}
+                        alt="Preview"
+                        className="mt-3 w-40 rounded"
+                    />
+                )}
+            </div>
+
+            {/* ITEMS */}
+            <div className="space-y-4">
+                {features.items.map((item, index) => (
+                    <div
+                        key={index}
+                        className="border rounded p-4 space-y-2 relative"
+                    >
                         <TextInput
-                            type="text"
-                            value={feature.text}
-                            placeholder={`Característica ${index + 1}`}
-                            className="flex-1"
-                            onChange={(e) => updateText(index, e.target.value)}
+                            value={item.title}
+                            onChange={(e) =>
+                                updateItem(index, "title", e.target.value)
+                            }
+                            placeholder="Título (ej: Duraderos)"
                         />
-
-                        {/* INPUT IMAGEN */}
-                        <label className="cursor-pointer">
-                            <input
-                                type="file"
-                                accept="image/*"
-                                className="hidden"
-                                onChange={(e) =>
-                                    updateImage(index, e.target.files[0])
-                                }
-                            />
-
-                            <div className="w-14 h-14 border rounded-lg flex items-center justify-center overflow-hidden bg-gray-100">
-                                {feature.preview ? (
-                                    <img
-                                        src={feature.preview}
-                                        alt="preview"
-                                        className="w-full h-full object-cover"
-                                    />
-                                ) : (
-                                    <span className="text-xs text-gray-400">
-                                        Img
-                                    </span>
-                                )}
-                            </div>
-                        </label>
-
-                        {/* ELIMINAR */}
-                        {data.features.length > 1 && (
+                        {features.items.length > 1 && (
                             <button
                                 type="button"
-                                onClick={() => removeFeature(index)}
-                                className="text-red-600 hover:text-red-800 px-2"
+                                onClick={() => removeItem(index)}
+                                className="text-red-500 text-sm"
                             >
-                                ✕
+                                Eliminar
                             </button>
                         )}
                     </div>
                 ))}
             </div>
 
+            {/* CONTROLES */}
             <button
                 type="button"
-                onClick={addFeature}
-                className="mt-3 text-sm text-indigo-600 hover:underline"
+                onClick={addItem}
+                disabled={features.items.length >= 4}
+                className="px-4 py-2 bg-black text-white rounded disabled:opacity-50"
             >
-                + Agregar característica
+                Agregar característica
             </button>
-
-            <InputError message={errors.features} className="mt-2" />
         </div>
     );
 }

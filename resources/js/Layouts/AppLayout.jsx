@@ -13,7 +13,7 @@ export default function AppLayout({ children }) {
             {/* NAVBAR */}
             <NavBar/>
             {/* CONTENIDO DE LA PÁGINA */}
-            <main className="flex-1 container mx-auto p-6">{children}</main>
+            <main className="flex-1 container mx-auto p-6 mt-12">{children}</main>
             <FooterLayout/>
         </div>
     );

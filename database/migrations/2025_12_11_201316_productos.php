@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
             $table->integer('stock');
+            $table->integer('product_type');
             $table->unsignedBigInteger('user_id');
             $table->boolean('active')->default(true);
             $table->decimal('price', 10, 2);

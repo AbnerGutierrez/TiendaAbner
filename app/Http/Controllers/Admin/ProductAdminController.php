@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\product_char;
+use App\Models\ProductImage;
 use App\Models\advantages;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
@@ -18,9 +19,14 @@ class ProductAdminController extends Controller
     {
         return Inertia::render('Admin/AddProducto');
     }
+    public function addFaster()
+    {
+        return Inertia::render('Admin/AddProductoFaster');
+    }
 
     public function store(Request $request)
     {
+        dd("saddas");
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string|max:500',
@@ -71,6 +77,46 @@ class ProductAdminController extends Controller
 
         return back()->with('success', 'Producto agregado correctamente');
     }
+    public function storeFaster(Request $request)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string|max:500',
+            'stock' => 'required|integer|min:0',
+            'price' => 'required|numeric|min:0',
+
+            'images' => 'nullable|array',
+            'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:2048',
+        ]);
+
+        DB::transaction(function () use ($request, $validated) {
+
+            $product = Product::create([
+                'title' => $validated['title'],
+                'description' => $validated['description'],
+                'stock' => $validated['stock'],
+                'price' => $validated['price'],
+                'user_id' => auth()->id(),
+                'product_type' => 1,
+                'fecha' => now(),
+            ]);
+
+            if ($request->hasFile('images')) {
+                foreach ($request->file('images') as $image) {
+                    $path = $image->store('products', 'public');
+
+                    ProductImage::create([
+                        'id_product' => $product->id,
+                        'image' => $path,
+                    ]);
+                }
+            }
+        });
+
+        return redirect()
+            ->back()
+            ->with('success', 'Producto agregado correctamente');
+    }
 
 
     public function edit($id)
@@ -111,8 +157,6 @@ class ProductAdminController extends Controller
             ->with('success', 'Producto actualizado correctamente');
     }
 
-
-
     public function delete($id)
     {
         DB::transaction(function () use ($id) {
@@ -148,46 +192,72 @@ class ProductAdminController extends Controller
             ->with('success', 'Producto eliminado correctamente');
     }
 
-
-
     public function show($id)
     {
         $product = Product::findOrFail($id);
 
-        $features = product_char::where('id_product', $id)
-            ->get()
-            ->map(function ($feature) {
-                return [
-                    'text' => $feature->description,
-                    'image_url' => $feature->image
-                        ? Storage::url($feature->image)
-                        : null,
-                ];
-            });
-
-        $advantages = advantages::where('id_product', $id)
-            ->get()
-            ->map(function ($advantage) {
-                return [
-                    'text' => $advantage->description,
-                ];
-            });
-
-        $product->image_url = Storage::url($product->image);
+        $images = DB::table('product_images')
+            ->where('id_product', $product->id)
+            ->pluck('image')
+            ->map(fn($img) => Storage::url($img));
 
         return Inertia::render('Buy/LandingProduct', [
-            'product' => $product,
-            'features' => $features,
-            'advantages' => $advantages,
+            'product' => [
+                'id' => $product->id,
+                'title' => $product->title,
+                'description' => $product->description,
+                'price' => $product->price,
+                'stock' => $product->stock,
+                'images' => $images, // 👈 array de imágenes
+            ],
         ]);
     }
-
 
     public function myProducts()
     {
         $productos = Product::all();
         return Inertia::render('Admin/MyProducts', [
             'productos' => $productos,
+        ]);
+    }
+
+    public function index()
+    {
+        $products = Product::select(
+            'products.id',
+            'products.title',
+            'products.price',
+            'products.stock',
+            DB::raw('MIN(product_images.image) as image')
+        )
+            ->leftJoin(
+                'product_images',
+                'products.id',
+                '=',
+                'product_images.id_product'
+            )
+            ->groupBy(
+                'products.id',
+                'products.title',
+                'products.price',
+                'products.stock'
+            )
+            ->orderBy('products.created_at', 'desc')
+            ->get()
+            ->map(function ($product) {
+                return [
+                    'id' => $product->id,
+                    'title' => $product->title,
+                    'price' => $product->price,
+                    'stock' => $product->stock,
+                    'image' => $product->image
+                        ? asset('storage/' . $product->image)
+                        : null,
+                ];
+            });
+
+        return Inertia::render('Admin/Products/Index', [
+            'products' => $products,
         ]);
     }
 }
