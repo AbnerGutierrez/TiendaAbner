@@ -16,6 +16,7 @@ class ProductController extends Controller
     {
         $products = Product::select(
             'products.id',
+            'products.uuid',
             'products.title',
             'products.price',
             'products.stock',
@@ -29,6 +30,7 @@ class ProductController extends Controller
             )
             ->groupBy(
                 'products.id',
+                'products.uuid',
                 'products.title',
                 'products.price',
                 'products.stock'
@@ -38,6 +40,7 @@ class ProductController extends Controller
             ->map(function ($product) {
                 return [
                     'id' => $product->id,
+                    'uuid' => $product->uuid,
                     'title' => $product->title,
                     'price' => $product->price,
                     'stock' => $product->stock,
@@ -46,13 +49,15 @@ class ProductController extends Controller
                         : null,
                 ];
             });
+
         return Inertia::render('Guest/ListProducts', [
             'products' => $products,
         ]);
     }
-    public function showProduct($id)
+    public function showProduct($uuid)
     {
-        $product = Product::findOrFail($id);
+        $product = Product::where('uuid', $uuid)->firstOrFail();
+
 
         $images = DB::table('product_images')
             ->where('id_product', $product->id)

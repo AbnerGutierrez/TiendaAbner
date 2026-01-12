@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Product extends Model
 {
@@ -12,6 +13,7 @@ class Product extends Model
 
     protected $fillable = [
         'id',
+        'uuid',
         'title',
         'description',
         'stock',
@@ -34,5 +36,12 @@ class Product extends Model
     public function advantages()
     {
         return $this->hasMany(advantages::class, 'id_product');
+    }
+
+    protected static function booted()
+    {
+        static::creating(function ($product) {
+            $product->uuid = Str::uuid();
+        });
     }
 }

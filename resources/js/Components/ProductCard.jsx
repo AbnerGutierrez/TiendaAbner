@@ -31,7 +31,7 @@ export default function ProductCard({ product }) {
                 <p className="text-sm text-gray-500">Stock: {product.stock}</p>
 
                 <Link
-                    href={route("products.showProduct", product.id)}
+                    href={route("products.showProduct", product.uuid)}
                     className="block mt-4 text-center bg-black text-white py-2 rounded"
                 >
                     Ver producto

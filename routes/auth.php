@@ -39,8 +39,8 @@ Route::middleware('guest')->group(function () {
     Route::get('products', [ProductController::class, 'showlist'])
         ->name('products.showlist');
 
-
-    Route::get('showProduct/{id}', [ProductController::class, 'showProduct'])
+ 
+    Route::get('showProduct/{product:uuid}', [ProductController::class, 'showProduct'])
         ->name('products.showProduct');
 });
 
