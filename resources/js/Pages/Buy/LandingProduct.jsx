@@ -1,143 +1,164 @@
 import AuthenticatedAdminLayout from "@/Layouts/AuthenticatedAdminLayout";
-import { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPaypal } from "@fortawesome/free-brands-svg-icons";
-import AppLayout from "@/Layouts/AppLayout";
+import { motion } from "framer-motion";
+import { Star, Check, ShoppingCart } from "lucide-react";
 
-export default function LandingProduct({ product }) {
-    const [mainImage, setMainImage] = useState(product.images[0] ?? null);
-    const [quantity, setQuantity] = useState(1);
-
-    const maxStock = product.stock;
-
+export default function LandingProduct({ product, features, advantages }) {
     return (
-        <AppLayout>
-            <div className="max-w-6xl mx-auto px-6 py-12">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                    {/* GALERÍA */}
-                    <div>
-                        <div className="border rounded-lg bg-gray-50 overflow-hidden">
-                            {mainImage ? (
-                                <img
-                                    src={mainImage}
-                                    alt={product.title}
-                                    className="w-full h-[420px] object-contain"
-                                />
-                            ) : (
-                                <div className="h-[420px] flex items-center justify-center text-gray-400">
-                                    Sin imagen
-                                </div>
-                            )}
-                        </div>
-
-                        {/* MINIATURAS */}
-                        {product.images.length > 1 && (
-                            <div className="flex gap-2 mt-4">
-                                {product.images.map((img, index) => (
-                                    <button
-                                        key={index}
-                                        onClick={() => setMainImage(img)}
-                                        className={`border rounded p-1 ${
-                                            mainImage === img
-                                                ? "border-black"
-                                                : "border-gray-300"
-                                        }`}
-                                    >
-                                        <img
-                                            src={img}
-                                            className="w-16 h-16 object-cover"
-                                        />
-                                    </button>
-                                ))}
-                            </div>
-                        )}
-                    </div>
-
-                    {/* INFO + COMPRA */}
-                    <div className="space-y-6">
-                        <h1 className="text-2xl font-semibold">
+        <AuthenticatedAdminLayout>
+            <div className="bg-gray-50 text-gray-800">
+                {/* HERO / PRODUCTO */}
+                <section className="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-12 items-center">
+                    <motion.div
+                        initial={{ opacity: 0, x: -40 }}
+                        animate={{ opacity: 1, x: 0 }}
+                    >
+                        <h1 className="text-4xl md:text-5xl font-bold mb-4">
                             {product.title}
                         </h1>
-
-                        <p className="text-3xl font-bold text-green-600">
-                            ${product.price}
-                        </p>
-
-                        <p className="text-sm text-gray-500">
-                            {product.stock > 0 ? (
-                                <>Stock disponible: {product.stock}</>
-                            ) : (
-                                <span className="text-red-500">Sin stock</span>
-                            )}
-                        </p>
-
-                        <div className="pt-4 border-t text-gray-700 leading-relaxed">
+                        <p className="text-lg text-gray-600 mb-6">
                             {product.description}
-                        </div>
+                        </p>
+                        <p className="text-3xl font-semibold mb-6">
+                            ${product.price}{" "}
+                            <span className="text-base text-gray-500">MXN</span>
+                        </p>
+                        <button className="flex items-center gap-2 bg-black text-white px-6 py-3 rounded-2xl hover:bg-gray-800 transition">
+                            <ShoppingCart size={18} /> Comprar ahora
+                        </button>
+                    </motion.div>
 
-                        {/* CANTIDAD */}
-                        {product.stock > 0 && (
-                            <div className="flex items-center gap-4">
-                                <span className="text-sm font-medium">
-                                    Cantidad:
-                                </span>
+                    <motion.div
+                        initial={{ opacity: 0, x: 40 }}
+                        animate={{ opacity: 1, x: 0 }}
+                    >
+                        <img
+                            src={product.image_url}
+                            alt="Producto"
+                            className="rounded-2xl shadow-lg"
+                        />
+                    </motion.div>
+                </section>
 
-                                <div className="flex items-center border rounded">
-                                    <button
-                                        type="button"
-                                        className="px-3 py-1 text-lg"
-                                        onClick={() =>
-                                            setQuantity(
-                                                quantity > 1 ? quantity - 1 : 1
-                                            )
-                                        }
+                {/* CARACTERÍSTICAS */}
+                <section className="bg-white py-20">
+                    <div className="max-w-6xl mx-auto px-6">
+                        <h2 className="text-3xl font-bold text-center mb-12">
+                            Características
+                        </h2>
+
+                        <div className="relative overflow-hidden rounded-2xl">
+                            <div className="flex gap-6 overflow-x-auto snap-x snap-mandatory scrollbar-hide scroll-smooth">
+                                {features.map((feature, i) => (
+                                    <div
+                                        key={i}
+                                        className="min-w-full h-[350px] relative snap-start rounded-2xl overflow-hidden shadow-lg"
                                     >
-                                        −
-                                    </button>
+                                        {feature.image_url && (
+                                            <img
+                                                src={feature.image_url}
+                                                alt={feature.text}
+                                                className="absolute inset-0 w-full h-full object-cover"
+                                            />
+                                        )}
 
-                                    <span className="px-4">{quantity}</span>
+                                        <div className="absolute inset-0 bg-black/50" />
 
-                                    <button
-                                        type="button"
-                                        className="px-3 py-1 text-lg"
-                                        onClick={() =>
-                                            setQuantity(
-                                                quantity < maxStock
-                                                    ? quantity + 1
-                                                    : quantity
-                                            )
-                                        }
-                                    >
-                                        +
-                                    </button>
-                                </div>
+                                        <div className="relative z-10 h-full flex flex-col justify-center items-center text-center text-white px-6">
+                                            <h3 className="text-3xl font-bold mb-3">
+                                                {feature.text}
+                                            </h3>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
-                        )}
 
-                        {/* BOTÓN COMPRAR */}
-                        <div className="space-y-3">
-                            <button
-                                disabled={product.stock === 0}
-                                className={`w-full py-3 rounded-lg font-semibold transition ${
-                                    product.stock > 0
-                                        ? "bg-black text-white hover:bg-gray-800"
-                                        : "bg-gray-300 text-gray-500 cursor-not-allowed"
-                                }`}
-                                onClick={() =>
-                                    alert(`Comprar ${quantity} unidad(es)`)
-                                }
-                            >
-                                <FontAwesomeIcon icon={faPaypal} /> Comprar
-                                ahora
-                            </button>
-
-                            <p className="text-xs text-gray-400 text-center ">
-                                Compra segura · Envío rápido · Garantía incluida
+                            <p className="text-center text-sm text-gray-500 mt-4">
+                                Desliza para ver más características
                             </p>
                         </div>
                     </div>
-                </div>
+                </section>
+
+                {/* VENTAJAS */}
+                <section className="py-20">
+                    <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-10 items-center">
+                        <img
+                            src={product.image_url}
+                            alt="Ventajas"
+                            className="rounded-2xl shadow-lg"
+                        />
+
+                        <div>
+                            <h2 className="text-3xl font-bold mb-6">
+                                ¿Por qué elegirlo?
+                            </h2>
+
+                            <ul className="space-y-4 text-gray-600">
+                                {advantages.map((adv, i) => (
+                                    <li
+                                        key={i}
+                                        className="flex items-center gap-2"
+                                    >
+                                        <Check
+                                            className="text-green-500"
+                                            size={18}
+                                        />
+                                        {adv.text}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                {/* RESEÑAS */}
+                <section className="bg-white py-20">
+                    <div className="max-w-6xl mx-auto px-6">
+                        <h2 className="text-3xl font-bold text-center mb-12">
+                            Reseñas de clientes
+                        </h2>
+                        <div className="grid md:grid-cols-3 gap-8">
+                            {[1, 2, 3].map((r) => (
+                                <div
+                                    key={r}
+                                    className="p-6 rounded-2xl shadow-sm bg-gray-50"
+                                >
+                                    <div className="flex gap-1 mb-3">
+                                        {[1, 2, 3, 4, 5].map((s) => (
+                                            <Star
+                                                key={s}
+                                                size={16}
+                                                className="text-yellow-400 fill-yellow-400"
+                                            />
+                                        ))}
+                                    </div>
+                                    <p className="text-gray-600 mb-3">
+                                        "Excelente producto, superó mis
+                                        expectativas y la batería dura
+                                        bastante."
+                                    </p>
+                                    <p className="font-semibold">
+                                        – Usuario satisfecho
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+
+                {/* CTA FINAL */}
+                <section className="py-20 bg-black text-white text-center">
+                    <h2 className="text-3xl font-bold mb-4">
+                        Empieza a mejorar tu día hoy
+                    </h2>
+                    <p className="mb-6 text-gray-300">
+                        Consigue el SmartWatch Pro X ahora mismo
+                    </p>
+                    <button className="bg-white text-black px-8 py-3 rounded-2xl font-medium hover:bg-gray-200 transition">
+                        Comprar ahora
+                    </button>
+                </section>
             </div>
-        </AppLayout>
+        </AuthenticatedAdminLayout>
     );
 }

@@ -5,6 +5,7 @@ use App\Http\Controllers\Buy\ProductController;
 use App\Http\Controllers\Buy\CartController;
 use App\Http\Controllers\Buy\CheckoutController;
 use App\Http\Controllers\Buy\OrderController;
+use App\Http\Controllers\Productos\PayPalController;
 
 Route::prefix('buy')->name('buy.')->group(function () {
     // Productos
@@ -26,4 +27,8 @@ Route::prefix('buy')->name('buy.')->group(function () {
         Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
         Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
     });
+
+    //PAYPAL
+    Route::post('/paypal/order', [PayPalController::class, 'createOrder']);
+    Route::post('/paypal/order/{orderId}/capture', [PayPalController::class, 'captureOrder']);
 });

@@ -3,12 +3,13 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaypal } from "@fortawesome/free-brands-svg-icons";
 import AppLayout from "@/Layouts/AppLayout";
-
+import PayPalButton from "@/Components/PayPalButton";
 export default function DetailProduct({ product }) {
     const [mainImage, setMainImage] = useState(product.images[0] ?? null);
     const [quantity, setQuantity] = useState(1);
 
     const maxStock = product.stock;
+    const totalAmount = (product.price * quantity).toFixed(2);
 
     return (
         <AppLayout>
@@ -114,27 +115,20 @@ export default function DetailProduct({ product }) {
                             </div>
                         )}
 
-                        {/* BOTÓN COMPRAR */}
-                        <div className="space-y-3">
-                            <button
-                                disabled={product.stock === 0}
-                                className={`w-full py-3 rounded-lg font-semibold transition ${
-                                    product.stock > 0
-                                        ? "bg-black text-white hover:bg-gray-800"
-                                        : "bg-gray-300 text-gray-500 cursor-not-allowed"
-                                }`}
-                                onClick={() =>
-                                    alert(`Comprar ${quantity} unidad(es)`)
-                                }
-                            >
-                                <FontAwesomeIcon icon={faPaypal} /> Comprar
-                                ahora
-                            </button>
+                        {/* PAYPAL */}
+                        {product.stock > 0 && (
+                            <div className="space-y-3">
+                                <PayPalButton
+                                    amount={totalAmount}
+                                    productId={product.id}
+                                    quantity={quantity}
+                                />
 
-                            <p className="text-xs text-gray-400 text-center ">
-                                Compra segura · Envío rápido · Garantía incluida
-                            </p>
-                        </div>
+                                <p className="text-xs text-gray-400 text-center">
+                                    Pago seguro con PayPal · MXN
+                                </p>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
