@@ -10,19 +10,18 @@ export default function CompraModal({ open, onClose, product }) {
     }, [open]);
 
     const handleGuestCheckout = () => {
-        // (Opcional) guardar intención
         localStorage.setItem(
             "checkout_intent",
             JSON.stringify({
-                product_id: product.id,
+                product_id: product.uuid,
                 from: "product_modal",
             })
         );
 
         onClose();
 
-        router.get(route("mainProduct.checkout"), {
-            product_id: product.id,
+        router.get(route("guest.mainProduct.checkout"), {
+            product_id: product.uuid,
         });
     };
 

@@ -193,11 +193,11 @@ export default function MainProduct({ product }) {
                             </p>
 
                             <button
-                            onClick={() => setOpenModal(true)}
-                            className="mt-4 px-8 py-3 border border-black text-sm uppercase tracking-widest hover:bg-black hover:text-white transition"
-                        >
-                            Comprar ahora
-                        </button>
+                                onClick={() => setOpenModal(true)}
+                                className="mt-4 px-8 py-3 border border-black text-sm uppercase tracking-widest hover:bg-black hover:text-white transition"
+                            >
+                                Comprar ahora
+                            </button>
                         </div>
                     </div>
                 </section>
