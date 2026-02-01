@@ -24,7 +24,7 @@ export default function SuccessView({ details, product }) {
             </div>
 
             <a
-                href="/"
+                href="/dashboard"
                 className="inline-block bg-black text-white px-8 py-3 rounded-xl font-medium"
             >
                 Volver a la tienda

@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Guest;
+namespace App\Http\Controllers\Host;
 
 use App\Http\Controllers\Controller;
-use App\Models\Order;
+use App\Models\host_order;
 use App\Models\Product;
 use App\Services\PayPalService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class GuestController extends Controller
+class HostController extends Controller
 {
-
     public function mainProduct()
     {
         $product = Product::where('id', 1)->firstOrFail();
@@ -23,7 +23,7 @@ class GuestController extends Controller
             ->pluck('image')
             ->map(fn($img) => Storage::url($img));
 
-        return Inertia::render('Guest/MainProduct', [
+        return Inertia::render('Host/MainProduct', [
             'product' => [
                 'id' => $product->id,
                 'uuid' => $product->uuid,
@@ -45,7 +45,7 @@ class GuestController extends Controller
             ->pluck('image')
             ->map(fn($img) => Storage::url($img));
 
-        return Inertia::render('Guest/GuestCheckout', [
+        return Inertia::render('Host/GuestCheckout', [
             'product' => [
                 'id' => $product->id,
                 'title' => $product->title,
@@ -59,6 +59,7 @@ class GuestController extends Controller
 
     public function mainProductCreateOrder(Request $request)
     {
+
         $request->validate([
             'product_id' => 'required|exists:products,id',
             'name' => 'required|string',
@@ -77,11 +78,12 @@ class GuestController extends Controller
             return response()->json(['message' => 'Producto sin stock'], 422);
         }
 
-        $order = Order::create([
+        $order = host_order::create([
             'product_id' => $product->id,
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
+            'idUser' => Auth::id(),
             'address' => $request->address,
             'address2' => $request->address2,
             'city' => $request->city,
@@ -95,19 +97,20 @@ class GuestController extends Controller
 
     public function mainProductPayPalCreateOrder(Request $request, PayPalService $paypal)
     {
+        
         $request->validate([
-            'orderId' => 'required|exists:orders,id',
+            'orderId' => 'required|exists:host_orders,id',
         ]);
+       
+        $order = host_order::with('product')->findOrFail($request->orderId);
+    
 
-        $order = Order::with('product')->findOrFail($request->orderId);
-        // 🔐 La orden debe estar pendiente
         if ($order->status !== 'pending') {
             return response()->json([
                 'message' => 'La orden no es válida para pago'
             ], 422);
         }
 
-        // 🔁 Idempotencia: si ya existe orden PayPal, reutilizarla
         if ($order->paypal_order_id) {
             return response()->json([
                 'id' => $order->paypal_order_id
@@ -115,9 +118,8 @@ class GuestController extends Controller
         }
 
         try {
-            // 🔒 El monto SIEMPRE sale del backend
             $paypalOrder = $paypal->createOrder($order->amount);
-            // Guardar relación PayPal ↔ Orden
+
             $order->update([
                 'paypal_order_id' => $paypalOrder['id']
             ]);
@@ -143,7 +145,7 @@ class GuestController extends Controller
         try {
 
             $result = DB::transaction(function () use ($paypalOrderId, $paypal) {
-                $order = Order::with('product')
+                $order = host_order::with('product')
                     ->where('paypal_order_id', $paypalOrderId)
                     ->lockForUpdate()
                     ->firstOrFail();

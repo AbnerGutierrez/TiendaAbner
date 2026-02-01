@@ -29,13 +29,13 @@ export default function CompraModal({ open, onClose, product }) {
         localStorage.setItem(
             "checkout_intent",
             JSON.stringify({
-                product_id: product.id,
+                product_id: product.uuid,
                 from: "product_modal",
             })
         );
 
         onClose();
-        router.visit("/register");
+        router.visit("/login");
     };
 
     return (

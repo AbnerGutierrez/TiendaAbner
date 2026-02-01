@@ -19,7 +19,7 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__ . '/rutas_usuario_guest.php';
-
+require __DIR__ . '/rutas_usuario_host.php';
 require __DIR__ . '/auth.php';
 require __DIR__ . '/buy.php';
 require __DIR__ . '/admin.php';

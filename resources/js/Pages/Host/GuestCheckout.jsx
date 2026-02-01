@@ -1,8 +1,8 @@
-import PayPalButton from "@/Components/PayPalButton";
 import GuestBuyLayout from "@/Layouts/GuestBuyLayout";
 import axios from "axios";
 import { useState } from "react";
 import SuccessView from "@/Components/SuccessView";
+import PayPalButtonHost from "@/Components/PayPalButtonHost";
 export default function GuestCheckout({ product }) {
     const [form, setForm] = useState({
         name: "",
@@ -27,13 +27,10 @@ export default function GuestCheckout({ product }) {
     const createOrder = async () => {
         setLoading(true);
         try {
-            const { data } = await axios.post(
-                "/guest/mainProduct/createOrder",
-                {
-                    product_id: product.id,
-                    ...form,
-                }
-            );
+            const { data } = await axios.post("/host/mainProduct/createOrder", {
+                product_id: product.id,
+                ...form,
+            });
             setOrderId(data.id);
         } catch (error) {
             alert("Completa todos los datos correctamente" + error);
@@ -192,7 +189,7 @@ export default function GuestCheckout({ product }) {
                     {/* PAGO */}
                     <div className="bg-white p-6 rounded-xl border shadow-sm">
                         {orderId ? (
-                            <PayPalButton
+                            <PayPalButtonHost
                                 orderId={orderId}
                                 onSuccess={handlePaymentSuccess}
                             />
