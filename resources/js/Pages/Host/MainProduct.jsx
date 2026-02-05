@@ -1,7 +1,6 @@
 import { useState } from "react";
 import GuestBuyLayout from "@/Layouts/GuestBuyLayout";
-import Modal from "@/Components/Modal";
-import CompraModal from "@/Components/CompraModal";
+import CompraModalHost from "@/Components/ComprarModalHost";
 export default function MainProduct({ product }) {
     const [openModal, setOpenModal] = useState(false);
 
@@ -40,7 +39,7 @@ export default function MainProduct({ product }) {
                             Comprar ahora
                         </button>
 
-                        <CompraModal
+                        <CompraModalHost
                             product={product}
                             open={openModal}
                             onClose={() => setOpenModal(false)}

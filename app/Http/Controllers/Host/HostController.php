@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class HostController extends Controller
 {
@@ -97,13 +98,19 @@ class HostController extends Controller
 
     public function mainProductPayPalCreateOrder(Request $request, PayPalService $paypal)
     {
-        
+      
+        Log::info('createOrder llamado', [
+            'order_id' => $request->orderId,
+            'status' => optional(
+                host_order::find($request->orderId)
+            )->status,
+        ]);
         $request->validate([
             'orderId' => 'required|exists:host_orders,id',
         ]);
-       
+
         $order = host_order::with('product')->findOrFail($request->orderId);
-    
+
 
         if ($order->status !== 'pending') {
             return response()->json([
