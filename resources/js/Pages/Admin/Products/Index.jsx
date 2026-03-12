@@ -1,10 +1,17 @@
 import AuthenticatedAdminLayout from "@/Layouts/AuthenticatedAdminLayout";
 import ProductCard from "@/Components/ProductCard";
 import AppLayout from "@/Layouts/AppLayout";
+import SidebarM from "@/Layouts/navar/sidebar";
 
 export default function Index({ products }) {
     return (
-        <AppLayout>
+        <AuthenticatedAdminLayout
+            header={
+                <h2 className="text-xl font-semibold leading-tight text-gray-800">
+                    Productos
+                </h2>
+            }
+        >
             <div className="max-w-7xl mx-auto p-6">
                 <h1 className="text-2xl font-bold mb-6">Productos</h1>
 
@@ -18,6 +25,6 @@ export default function Index({ products }) {
                     </div>
                 )}
             </div>
-        </AppLayout>
+        </AuthenticatedAdminLayout>
     );
 }

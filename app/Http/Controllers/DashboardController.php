@@ -13,25 +13,10 @@ class DashboardController extends Controller
     public function index()
     {
         $user = auth()->user();
-        $orders = Order::select(
-            'id',
-            'amount',
-            'status',
-            'created_at'
-        )
-            ->latest()
-            ->paginate(10);
-        $ordersClients = host_order::select(
-            'id',
-            'amount',
-            'status',
-            'created_at'
-        )
-            ->latest()
-            ->paginate(10);
-
+        $totalOrders = Order::count();
+        $totalSales = Order::sum('amount');
         return $user->id_type === 2
-            ? Inertia::render('DashboardAdmin', ["orders" => $orders,"ordersClients" => $ordersClients])
+            ? Inertia::render('DashboardAdmin', ['totalOrders' => $totalOrders, 'totalSales' => $totalSales])
             : Inertia::render('Dashboard');
     }
 }

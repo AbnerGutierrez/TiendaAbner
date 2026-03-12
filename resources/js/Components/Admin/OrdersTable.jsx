@@ -1,25 +1,52 @@
 import { Link } from "@inertiajs/react";
+import PrimaryButton from "../PrimaryButton";
+import { useState } from "react";
+import axios from "axios";
+import Modal from "../Modal";
+import ModalAtender from "./ModalAtender";
 
-export default function OrdersTable({ title, orders }) {
+export default function OrdersTable({ orders }) {
+    const [openModal, setOpenModal] = useState(false);
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(false);
+
+    const handleGetData = async (order_id) => {
+        setOpenModal(true);
+        setLoading(true);
+        setData(null);
+
+        try {
+            const response = await axios.get(route("admin.data", order_id));
+            setData(response.data);
+        } catch (error) {
+            console.log(error);
+        }
+        setLoading(false);
+    };
+
     return (
-        <div className="mb-10">
-            <h3 className="text-lg font-semibold mb-4">{title}</h3>
-
-            <div className="overflow-x-auto bg-white shadow rounded">
-                <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-100">
+        <div className="mb-10 mx-4 my-4 ">
+            <div className=" relative overflow-x-auto bg-white shadow-xs rounded-lg border border-default">
+                <table className="w-full text-sm text-center rtl:text-right ">
+                    <thead className="text-sm  bg-neutral-secondary-soft border-b rounded-base border-default">
                         <tr>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase">
+                            <th className="px-6 py-3 text-center text-xs font-medium text-gray-600 uppercase">
                                 ID
                             </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase">
-                                Total
+                            <th className="px-6 py-3 text-center text-xs font-medium text-gray-600 uppercase">
+                                Nombre
                             </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase">
-                                Estado
+                            <th className="px-6 py-3 text-center text-xs font-medium text-gray-600 uppercase">
+                                Email
                             </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase">
-                                Fecha
+                            <th className="px-6 py-3 text-center text-xs font-medium text-gray-600 uppercase">
+                                Producto
+                            </th>
+                            <th className="px-6 py-3 text-center text-xs font-medium text-gray-600 uppercase">
+                                Estatus pago
+                            </th>
+                            <th className="px-6 py-3 text-center text-xs font-medium text-gray-600 uppercase">
+                                Estatus compra
                             </th>
                             <th className="px-6 py-3 text-center text-xs font-medium text-gray-600 uppercase">
                                 Acciones
@@ -27,7 +54,7 @@ export default function OrdersTable({ title, orders }) {
                         </tr>
                     </thead>
 
-                    <tbody className="bg-white divide-y divide-gray-200">
+                    <tbody className="bg-white divide-y divide-gray-200 text-center">
                         {orders.data.length === 0 && (
                             <tr>
                                 <td
@@ -42,8 +69,10 @@ export default function OrdersTable({ title, orders }) {
                         {orders.data.map((order) => (
                             <tr key={order.id}>
                                 <td className="px-6 py-4">{order.id}</td>
+                                <td className="px-6 py-4">{order.name}</td>
+                                <td className="px-6 py-4">{order.email}</td>
                                 <td className="px-6 py-4">
-                                    ${Number(order.amount).toFixed(2)}
+                                    {order.product_id}
                                 </td>
                                 <td className="px-6 py-4">
                                     <span
@@ -59,19 +88,16 @@ export default function OrdersTable({ title, orders }) {
                                         {order.status}
                                     </span>
                                 </td>
-                                <td className="px-6 py-4">
-                                    {new Date(
-                                        order.created_at
-                                    ).toLocaleDateString()}
-                                </td>
+                                <td>pendiente</td>
                                 <td className="px-6 py-4 text-center">
                                     <div className="flex justify-center gap-2">
-                                        <Link className="text-blue-600 hover:underline">
-                                            Ver
-                                        </Link>
-                                        <Link className="text-indigo-600 hover:underline">
-                                            Editar
-                                        </Link>
+                                        <PrimaryButton
+                                            onClick={() =>
+                                                handleGetData(order.id)
+                                            }
+                                        >
+                                            Atender
+                                        </PrimaryButton>
                                     </div>
                                 </td>
                             </tr>
@@ -79,6 +105,23 @@ export default function OrdersTable({ title, orders }) {
                     </tbody>
                 </table>
             </div>
+
+            {/* MODAL */}
+
+            {openModal && (
+                <ModalAtender
+                    isOpen={openModal}
+                    loading={loading}
+                    data={data} // Los datos que traes de tu API
+                    onClose={() => setOpenModal(false)}
+                    onAtender={() => {
+                        console.log("Atendiendo ticket...");
+                        // Tu lógica aquí (ej: update en base de datos)
+                    }}
+                    onCancelar={() => console.log("Cancelando...")}
+                    onContactar={() => console.log("Contactando...")}
+                />
+            )}
 
             {/* PAGINACIÓN */}
             <div className="mt-4 flex justify-center gap-1">

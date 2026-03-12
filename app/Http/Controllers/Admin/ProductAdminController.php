@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\product_char;
 use App\Models\ProductImage;
 use App\Models\advantages;
+use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -225,6 +226,7 @@ class ProductAdminController extends Controller
     {
         $products = Product::select(
             'products.id',
+            'products.uuid',
             'products.title',
             'products.price',
             'products.stock',
@@ -238,6 +240,7 @@ class ProductAdminController extends Controller
             )
             ->groupBy(
                 'products.id',
+                'products.uuid',
                 'products.title',
                 'products.price',
                 'products.stock'
@@ -247,6 +250,7 @@ class ProductAdminController extends Controller
             ->map(function ($product) {
                 return [
                     'id' => $product->id,
+                    'uuid' => $product->uuid,
                     'title' => $product->title,
                     'price' => $product->price,
                     'stock' => $product->stock,
@@ -255,9 +259,21 @@ class ProductAdminController extends Controller
                         : null,
                 ];
             });
-
+        // dd($products);
         return Inertia::render('Admin/Products/Index', [
             'products' => $products,
         ]);
+    }
+
+    public function orders()
+    {
+        $orders = Order::latest()->paginate(10);
+        $totalOrders = Order::count();
+        $totalSales = Order::sum('amount');
+        return Inertia::render('Admin/Products/Orders', ['orders' => $orders, 'totalOrders' => $totalOrders, 'totalSales' => $totalSales]);
+    }
+    public function data(Order $order)
+    {
+        return response()->json($order);
     }
 }

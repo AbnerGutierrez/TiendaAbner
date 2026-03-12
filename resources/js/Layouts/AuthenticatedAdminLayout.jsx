@@ -12,6 +12,12 @@ export default function AuthenticatedAdminLayout({ header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
 
+    const itemsNav = [
+        { title: "Dashboard", route: "dashboard" },
+        { title: "Orders", route: "admin.orders" },
+        { title: "Productos", route: "admin.products.products" },
+    ];
+
     return (
         <div className="min-h-screen bg-gray-100">
             <nav className="border-b border-gray-100 bg-white">
@@ -25,12 +31,15 @@ export default function AuthenticatedAdminLayout({ header, children }) {
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink
-                                    href={route("dashboard")}
-                                    active={route().current("dashboard")}
-                                >
-                                    Dashboard
-                                </NavLink>
+                                {itemsNav.map((item) => (
+                                    <NavLink
+                                        key={item.route}
+                                        href={route(item.route)}
+                                        active={route().current(item.route)}
+                                    >
+                                        {item.title}
+                                    </NavLink>
+                                ))}
                             </div>
                         </div>
 
@@ -67,27 +76,7 @@ export default function AuthenticatedAdminLayout({ header, children }) {
                                         >
                                             Mi perfil
                                         </Dropdown.Link>
-                                        <Dropdown.Link
-                                            href={route("admin.products.add")}
-                                        >
-                                            Agregar productos
-                                        </Dropdown.Link>
-                                        <Dropdown.Link
-                                            href={route("admin.products.addFaster")}
-                                        >
-                                            Agregar rapido
-                                        </Dropdown.Link>
-                                        
-                                        <Dropdown.Link
-                                            href={route("admin.products.myProducts")}
-                                        >
-                                            Mis productos
-                                        </Dropdown.Link>
-                                        <Dropdown.Link
-                                            href={route("admin.products.products")}
-                                        >
-                                            Mis productos2
-                                        </Dropdown.Link>
+
                                         <Dropdown.Link
                                             href={route("logout")}
                                             method="post"
@@ -150,12 +139,15 @@ export default function AuthenticatedAdminLayout({ header, children }) {
                     }
                 >
                     <div className="space-y-1 pb-3 pt-2">
-                        <ResponsiveNavLink
-                            href={route("dashboard")}
-                            active={route().current("dashboard")}
-                        >
-                            Dashboard
-                        </ResponsiveNavLink>
+                        {itemsNav.map((item) => (
+                            <ResponsiveNavLink
+                                key={item.route}
+                                href={route(item.route)}
+                                active={route().current(item.route)}
+                            >
+                                {item.title}
+                            </ResponsiveNavLink>
+                        ))}
                     </div>
 
                     <div className="border-t border-gray-200 pb-1 pt-4">
@@ -172,19 +164,6 @@ export default function AuthenticatedAdminLayout({ header, children }) {
                             <ResponsiveNavLink href={route("profile.edit")}>
                                 Mi perfil
                             </ResponsiveNavLink>
-                            <ResponsiveNavLink
-                                href={route("admin.products.add")}
-                            >
-                                Agregar producto
-                            </ResponsiveNavLink>
-                            <ResponsiveNavLink
-                                href={route("admin.products.addFaster")}
-                            >
-                                Agregar rapido
-                            </ResponsiveNavLink>
-                            <ResponsiveNavLink
-                            href={route("admin.products.myProducts")}
-                            >Mis productos</ResponsiveNavLink>
                             <ResponsiveNavLink
                                 method="post"
                                 href={route("logout")}

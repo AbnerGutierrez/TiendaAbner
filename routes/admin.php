@@ -13,7 +13,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/products/addFaster', 'addFaster')->name('products.addFaster');
         Route::get('/products/myProducts', 'myProducts')->name('products.myProducts');
         Route::get('/products/edit/{id}', 'edit')->name('products.edit');
-
+        Route::get('/orders','orders')->name('orders');
+        Route::get('/data/{order}','data')->name('data');
+        
         Route::delete('/products/delete/{id}', 'delete')->name('products.delete');
 
         Route::post('/products/store', 'store')->name('products.store');

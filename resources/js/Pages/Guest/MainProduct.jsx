@@ -2,6 +2,8 @@ import { useState } from "react";
 import GuestBuyLayout from "@/Layouts/GuestBuyLayout";
 import Modal from "@/Components/Modal";
 import CompraModal from "@/Components/CompraModal";
+import "@google/model-viewer";
+import { motion } from "framer-motion";
 export default function MainProduct({ product }) {
     const [openModal, setOpenModal] = useState(false);
 
@@ -9,43 +11,151 @@ export default function MainProduct({ product }) {
         <GuestBuyLayout>
             <div className="w-full">
                 {/* ================= HERO ================= */}
-                <section className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-                    {/* Imagen */}
-                    <div className="flex justify-center">
-                        <img
-                            src={product.images?.[0]}
-                            alt={product.title}
-                            className="max-w-sm"
-                        />
-                    </div>
-                    {/* Texto */}
-                    <div className="space-y-6 px-4">
-                        <h1 className="text-4xl md:text-5xl font-bold leading-tight">
-                            LENTES RAIBAN <br /> RUNNING GOLD
-                        </h1>
-
-                        <p className="text-gray-600 max-w-md">
-                            Lentes de la mejor calidad y a un precio
-                            espectacular.
-                        </p>
-
-                        <p className="text-2xl font-semibold">
-                            ${product.price}
-                        </p>
-
-                        <button
-                            onClick={() => setOpenModal(true)}
-                            className="mt-4 px-8 py-3 border border-black text-sm uppercase tracking-widest hover:bg-black hover:text-white transition"
+                <section className="relative max-w-5xl mx-auto px-6 pt-16 md:pt-24 pb-16">
+                    <div className="flex flex-col items-center text-center">
+                        {/* TEXTO: Centrado y con aire */}
+                        <motion.div
+                            initial="hidden"
+                            animate="visible"
+                            variants={{
+                                visible: {
+                                    transition: { staggerChildren: 0.2 },
+                                },
+                            }}
+                            className="z-10 mb-12"
                         >
-                            Comprar ahora
-                        </button>
+                            <motion.h1
+                                variants={{
+                                    hidden: { opacity: 0, y: 30 },
+                                    visible: { opacity: 1, y: 0 },
+                                }}
+                                transition={{
+                                    duration: 1,
+                                    ease: [0.22, 1, 0.36, 1],
+                                }}
+                                className="text-5xl md:text-7xl font-bold tracking-tighter text-slate-900 leading-none"
+                            >
+                                RAIBAN <br />
+                                <span className="text-gray-400 font-medium">
+                                    RUNNING{" "}
+                                </span>
+                                {/* Contenedor relativo para la palabra GOLD */}
+                                <span className="relative inline-block font-bold">
+                                    {/* CAPA BASE (Gris inicial, siempre visible) */}
+                                    <span className="text-gray-400">GOLD</span>
 
-                        <CompraModal
-                            product={product}
-                            open={openModal}
-                            onClose={() => setOpenModal(false)}
-                        />
+                                    {/* CAPA DORADA (Se revela de abajo hacia arriba) */}
+                                    <motion.span
+                                        initial={{
+                                            // Estado inicial: Totalmente invisible (recortado desde abajo)
+                                            opacity: 0,
+                                            backgroundImage:
+                                                "linear-gradient(180deg, #bf953f 0%, #fcf6ba 50%, #aa771c 100%)",
+                                            backgroundClip: "text",
+                                            WebkitBackgroundClip: "text",
+                                            WebkitTextFillColor: "transparent",
+                                            // clip-path: inset(arriba derecha abajo izquierda)
+                                            clipPath: "inset(100% 0% 0% 0%)", // El recorte cubre el 100% desde arriba
+                                        }}
+                                        animate={{
+                                            // Animación: El recorte desaparece, revelando el color
+                                            opacity: 1,
+                                            clipPath: "inset(0% 0% 0% 0%)", // El recorte se reduce al 0%
+                                        }}
+                                        transition={{
+                                            delay: 1.5, // TU RETRASO DE 1.5 SEGUNDOS
+                                            duration: 5, // Duración del "llenado"
+                                            ease: [0.22, 1, 0.36, 1], // Suavizado estilo Apple
+                                        }}
+                                        className="absolute inset-0 z-10" // Se superpone perfectamente sobre la base gris
+                                    >
+                                        GOLD
+                                    </motion.span>
+                                </span>
+                            </motion.h1>
+
+                            <motion.p
+                                variants={{
+                                    hidden: { opacity: 0 },
+                                    visible: { opacity: 1 },
+                                }}
+                                className="mt-6 text-gray-500 font-medium tracking-wide uppercase text-xs"
+                            >
+                                La ligereza del oro, la fuerza del running.
+                            </motion.p>
+                        </motion.div>
+
+                        {/* IMAGEN: El héroe central */}
+                        {/* IMAGEN SUSTITUIDA POR MODELO 3D */}
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{
+                                duration: 1.5,
+                                ease: [0.22, 1, 0.36, 1],
+                            }}
+                            className="relative w-full max-w-2xl mb-8"
+                        >
+                            {/* Resplandor sutil de fondo para resaltar el cristal de los lentes */}
+                            <div className="absolute inset-0 bg-radial-gradient from-gray-200/50 to-transparent opacity-30 blur-3xl -z-10" />
+
+                            <model-viewer
+                                src="/models/transparent_glasses_with_baked_textures.glb"
+                                alt="Modelo 3D Lentes Raiban"
+                                auto-rotate
+                                rotation-per-second="20deg" // Rotación más lenta y elegante
+                                camera-controls
+                                disable-zoom={true} // Evita que el usuario haga zoom por accidente al hacer scroll
+                                shadow-intensity="1"
+                                exposure="1.2" // Un poco más de luz para que brille el dorado
+                                environment-image="neutral"
+                                aria-label="Lentes Raiban Running Gold 3D"
+                                style={{
+                                    width: "100%",
+                                    height: "500px",
+                                    backgroundColor: "transparent",
+                                    outline: "none", // Quita el borde azul al hacer clic
+                                }}
+                            >
+                                {/* Slot de carga opcional mientras el modelo aparece */}
+                                <div
+                                    slot="poster"
+                                    className="w-full h-full flex items-center justify-center text-gray-300"
+                                >
+                                    Cargando experiencia 3D...
+                                </div>
+                            </model-viewer>
+                        </motion.div>
+
+                        {/* BOTÓN Y PRECIO: Limpio y directo */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.8, duration: 1 }}
+                            className="flex flex-col items-center gap-4"
+                        >
+                            <button
+                                onClick={() => setOpenModal(true)}
+                                className="group relative overflow-hidden bg-black text-white px-10 py-4 rounded-full text-sm font-medium tracking-widest transition-all hover:scale-105 active:scale-95"
+                            >
+                                <span className="relative z-10">
+                                    COMPRAR POR ${product.price}
+                                </span>
+                                {/* Efecto de brillo al pasar el mouse */}
+                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                            </button>
+
+                            <span className="text-xs text-gray-400 font-light">
+                                Envío gratuito a todo el país
+                            </span>
+                        </motion.div>
                     </div>
+
+                    <CompraModal
+                        product={product}
+                        open={openModal}
+                        onClose={() => setOpenModal(false)}
+                    />
                 </section>
 
                 {/* ================= FEATURE DESTACADA ================= */}
@@ -171,10 +281,15 @@ export default function MainProduct({ product }) {
                 <section className="bg-gray-100 py-24">
                     <div className="max-w-6xl mx-auto  grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
                         <div className="flex justify-center">
-                            <img
-                                src={product.images?.[0]}
-                                alt={product.title}
-                                className=""
+                            <model-viewer
+                                src="/models/transparent_glasses_with_baked_textures.glb"
+                                alt="Modelo 3D"
+                                auto-rotate
+                                camera-controls
+                                shadow-intensity="1"
+                                exposure="1"
+                                environment-image="neutral"
+                                style={{ width: "100%", height: "500px" }}
                             />
                         </div>
 

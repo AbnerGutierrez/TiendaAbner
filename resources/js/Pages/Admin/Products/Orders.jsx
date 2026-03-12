@@ -1,19 +1,18 @@
 import InfoWeb from "@/Components/Admin/InfoWeb";
 import OrdersTable from "@/Components/Admin/OrdersTable";
 import AuthenticatedAdminLayout from "@/Layouts/AuthenticatedAdminLayout";
-import { Head } from "@inertiajs/react";
 
-export default function DashboardAdmin({ totalOrders, totalSales }) {
+export default function Orders({ orders, totalOrders, totalSales }) {
     return (
         <AuthenticatedAdminLayout
             header={
                 <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    Dashboard de admin
+                    Orders admin
                 </h2>
             }
         >
-            <Head title="Inicio" />
             <InfoWeb totalOrders={totalOrders} totalSales={totalSales} />
+            <OrdersTable orders={orders} />
         </AuthenticatedAdminLayout>
     );
 }
