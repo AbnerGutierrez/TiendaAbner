@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email');
             $table->string('phone');
+            $table->string('idUser')->nullable();
 
             // Dirección
             $table->string('address');
@@ -33,6 +34,7 @@ return new class extends Migration
             $table->string('payment_id')->nullable();
             $table->string('paypal_order_id')->nullable()->unique();
             $table->enum('status', ['pending', 'paid', 'cancelled'])->default('pending');
+            $table->enum('status_shop', ['pending', 'served', 'cancelled'])->default('pending');
 
             $table->timestamps();
         });

@@ -76,7 +76,11 @@ export default function AuthenticatedAdminLayout({ header, children }) {
                                         >
                                             Mi perfil
                                         </Dropdown.Link>
-
+                                        <Dropdown.Link
+                                            href={route("admin.products.addFaster")}
+                                        >
+                                            Agregar producto
+                                        </Dropdown.Link>
                                         <Dropdown.Link
                                             href={route("logout")}
                                             method="post"

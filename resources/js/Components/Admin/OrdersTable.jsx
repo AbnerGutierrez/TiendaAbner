@@ -88,7 +88,20 @@ export default function OrdersTable({ orders }) {
                                         {order.status}
                                     </span>
                                 </td>
-                                <td>pendiente</td>
+                                <td className="px-6 py-4">
+                                    <span
+                                        className={`px-2 py-1 rounded text-xs
+                                        ${
+                                            order.status_shop === "served"
+                                                ? "bg-green-100 text-green-800"
+                                                : order.status_shop === "pending"
+                                                ? "bg-yellow-100 text-yellow-800"
+                                                : "bg-red-100 text-red-800"
+                                        }`}
+                                    >
+                                        {order.status_shop}
+                                    </span>
+                                </td>
                                 <td className="px-6 py-4 text-center">
                                     <div className="flex justify-center gap-2">
                                         <PrimaryButton

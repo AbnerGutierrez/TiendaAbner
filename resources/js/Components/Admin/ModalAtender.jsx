@@ -63,6 +63,14 @@ export default function ModalAtender({
                                         </td>
                                     </tr>
                                     <tr>
+                                        <th className="px-4 py-3 bg-gray-50 text-left font-semibold text-gray-600 w-1/3">
+                                            Contacto
+                                        </th>
+                                        <td className="px-4 py-3 text-gray-800">
+                                            {data.email} | {data.phone}
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <th className="px-4 py-3 bg-gray-50 text-left font-semibold text-gray-600">
                                             Artículo
                                         </th>
@@ -75,9 +83,21 @@ export default function ModalAtender({
                                             Dirección
                                         </th>
                                         <td className="px-4 py-3 text-gray-800 text-xs">
-                                            {data.address || "Sin dirección"}
+                                            {data.city || "Sin ciudad"}{" "}
+                                            {data.state || "Sin estado"}{" "}
+                                            {data.zip || "Sin CP"}{" "}
+                                            {data.address || "Sin dirección"}{" "}
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <th className="px-4 py-3 bg-gray-50 text-left font-semibold text-gray-600">
+                                            Referencias
+                                        </th>
+                                        <td className="px-4 py-3 text-gray-800 text-xs">
+                                            {data.address2 || "Sin dirección"}{" "}
+                                        </td>
+                                    </tr>
+
                                     <tr>
                                         <th className="px-4 py-3 bg-gray-50 text-left font-semibold text-gray-600">
                                             Total
