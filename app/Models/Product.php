@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 
 class Product extends Model
 {
+
     protected $connection = "mysql";
     protected $table = "products";
     protected $primaryKey = "id";
@@ -28,20 +29,34 @@ class Product extends Model
         'updated_at',
     ];
 
-    public function features()
-    {
-        return $this->hasMany(product_char::class, 'id_product');
-    }
-
-    public function advantages()
-    {
-        return $this->hasMany(advantages::class, 'id_product');
-    }
-
     protected static function booted()
     {
         static::creating(function ($product) {
             $product->uuid = Str::uuid();
         });
+    }
+
+    public function colors()
+    {
+        return $this->hasMany(Color::class, 'id_product');
+    }
+    public function promotions()
+    {
+        return $this->hasMany(Promotion::class, 'id_product');
+    }
+
+    public function features()
+    {
+        return $this->hasMany(Feature::class, 'id_product');
+    }
+
+    public function boxContent()
+    {
+        return $this->hasMany(BoxContent::class, 'id_product');
+    }
+
+    public function images()
+    {
+        return $this->hasMany(ProductImage::class, 'id_product');
     }
 }

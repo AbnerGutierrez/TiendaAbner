@@ -4,18 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class advantages extends Model
+class Promotion extends Model
 {
     protected $connection = "mysql";
-    protected $table = "product_advantage";
+    protected $table = "table_promotions";
     protected $primaryKey = "id";
 
     protected $fillable = [
-        'id',
         'id_product',
-        'description',
-        'image',
+        'promotion',
+        'value',
         'created_at',
-        'updated_at'
+        'updated_at',
     ];
 }

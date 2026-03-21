@@ -15,7 +15,7 @@ export default function CompraModal({ open, onClose, product }) {
             JSON.stringify({
                 product_id: product.uuid,
                 from: "product_modal",
-            })
+            }),
         );
 
         onClose();
@@ -31,7 +31,7 @@ export default function CompraModal({ open, onClose, product }) {
             JSON.stringify({
                 product_id: product.uuid,
                 from: "product_modal",
-            })
+            }),
         );
 
         onClose();
@@ -49,7 +49,7 @@ export default function CompraModal({ open, onClose, product }) {
                     onClick={onClose}
                 >
                     <motion.div
-                        className="bg-white w-full max-w-lg p-6 rounded-2xl relative shadow-2xl"
+                        className="bg-white w-full max-w-lg p-6 rounded-2xl relative shadow-2xl mx-1"
                         initial={{ scale: 0.9, opacity: 0, y: 40 }}
                         animate={{ scale: 1, opacity: 1, y: 0 }}
                         exit={{ scale: 0.95, opacity: 0, y: 20 }}

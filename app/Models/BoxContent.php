@@ -3,21 +3,18 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 
-class ProductImage extends Model
+class BoxContent extends Model
 {
-    protected $table = 'product_images';
     protected $connection = "mysql";
+    protected $table = "table_box_content";
     protected $primaryKey = "id";
 
     protected $fillable = [
         'id_product',
+        'title',
         'image',
+        'created_at',
+        'updated_at',
     ];
-
-    public function getUrlAttribute()
-    {
-        return Storage::url($this->image);
-    }
 }

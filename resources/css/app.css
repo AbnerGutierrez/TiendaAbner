@@ -2,8 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-
-*{
+* {
     scroll-behavior: smooth;
 }
 
@@ -17,3 +16,4 @@
     opacity: 1;
     transform: translateY(0);
 }
+

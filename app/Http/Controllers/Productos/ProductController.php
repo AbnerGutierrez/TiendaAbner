@@ -75,4 +75,10 @@ class ProductController extends Controller
             ],
         ]);
     }
+    public function showCepilloDucha()
+    {
+        $producto = Product::with(['colors','promotions','features','boxContent','images'])->find(4);
+        // dd($producto->boxContent);
+        return Inertia::render('Products/CepilloDucha', ['producto' => $producto]);
+    }
 }

@@ -7,8 +7,12 @@ use Illuminate\Http\Request;
 use App\Models\product_char;
 use App\Models\ProductImage;
 use App\Models\advantages;
+use App\Models\BoxContent;
+use App\Models\Color;
+use App\Models\Feature;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\Promotion;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -27,7 +31,6 @@ class ProductAdminController extends Controller
 
     public function store(Request $request)
     {
-        dd("saddas");
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string|max:500',
@@ -80,43 +83,100 @@ class ProductAdminController extends Controller
     }
     public function storeFaster(Request $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string|max:500',
-            'stock' => 'required|integer|min:0',
-            'price' => 'required|numeric|min:0',
+        // dd($request);
+        try {
+            DB::transaction(function () use ($request) {
+                $validated = $request->validate([
+                    'title' => 'required|string|max:255',
+                    'description' => 'required|string',
+                    'price' => 'required|numeric',
+                    'stock' => 'required|integer',
 
-            'images' => 'nullable|array',
-            'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:2048',
-        ]);
+                    'colors' => 'array',
+                    'colors.*' => 'string',
 
-        DB::transaction(function () use ($request, $validated) {
+                    'promotions' => 'array',
+                    'promotions.*.type' => 'required|string',
+                    'promotions.*.value' => 'nullable|numeric',
 
-            $product = Product::create([
-                'title' => $validated['title'],
-                'description' => $validated['description'],
-                'stock' => $validated['stock'],
-                'price' => $validated['price'],
-                'user_id' => auth()->id(),
-                'product_type' => 1,
-                'fecha' => now(),
-            ]);
+                    'features' => 'array',
+                    'features.*.text' => 'required|string',
+                    'features.*.image' => 'required|image',
 
-            if ($request->hasFile('images')) {
-                foreach ($request->file('images') as $image) {
-                    $path = $image->store('products', 'public');
+                    'contents' => 'array',
+                    'contents.*.text' => 'required|string',
+                    'contents.*.image' => 'nullable|image',
+
+                    'images' => 'array',
+                    'images.*' => 'image'
+                ]);
+                //Guardar producto principal
+                $product = Product::create([
+                    'title' => $validated['title'],
+                    'description' => $validated['description'],
+                    'stock' => $validated['stock'],
+                    'price' => $validated['price'],
+                    'user_id' => auth()->id(),
+                    'product_type' => 1,
+                    'fecha' => now(),
+                ]);
+                //Guardar colores
+                foreach ($request->colors as $color) {
+                    Color::create([
+                        'id_product' => $product->id,
+                        'color' => $color
+                    ]);
+                }
+                //Guardar promociones
+                foreach ($request->promotions as $promo) {
+                    Promotion::create([
+                        'id_product' => $product->id,
+                        'promotion' => $promo['type'],
+                        'value' => $promo['value']
+                    ]);
+                }
+                //Guardar caracteristicas con imagenes.
+                foreach ($request->features as $feature) {
+
+                    $path = $feature['image']->store('products/features', 'public');
+                    Feature::create([
+                        'id_product' => $product->id,
+                        'title' => $feature['text'],
+                        'image' => $path
+                    ]);
+                }
+                //Guardar contenido de la caja
+                foreach ($request->contents as $content) {
+
+                    $path = null;
+
+                    if (isset($content['image'])) {
+                        $path = $content['image']->store('products/contents', 'public');
+                    }
+
+                    BoxContent::create([
+                        'id_product' => $product->id,
+                        'title' => $content['text'],
+                        'image' => $path
+                    ]);
+                }
+                //Guardar imagenes principales
+                foreach ($request->images as $image) {
+
+                    $path = $image->store('products/images', 'public');
 
                     ProductImage::create([
                         'id_product' => $product->id,
-                        'image' => $path,
+                        'image' => $path
                     ]);
                 }
-            }
-        });
+            });
+        } catch (\Exception $e) {
+            Log::error('Error al guardar el producto' . $e->getMessage());
+            return back()->with('error', 'Error al crear el producto');
+        }
 
-        return redirect()
-            ->back()
-            ->with('success', 'Producto agregado correctamente');
+        return back()->with('success', 'Producto creado');
     }
 
 

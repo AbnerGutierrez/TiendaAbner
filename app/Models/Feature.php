@@ -4,18 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class product_char extends Model
+class Feature extends Model
 {
+
     protected $connection = "mysql";
-    protected $table = "product_char";
+    protected $table = "table_features";
     protected $primaryKey = "id";
 
     protected $fillable = [
-        'id',
         'id_product',
-        'description',
+        'title',
         'image',
         'created_at',
-        'updated_at'
+        'updated_at',
     ];
 }

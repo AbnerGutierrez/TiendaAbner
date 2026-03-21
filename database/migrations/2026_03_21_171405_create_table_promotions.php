@@ -9,13 +9,13 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('cat_user_types', function (Blueprint $table) {
+        Schema::create('table_promotions', function (Blueprint $table) {
             $table->id();
-            $table->string('rol');
-            $table->text('description');
-            $table->boolean('active')->default(true);
+            $table->integer('id_product');
+            $table->string('promotion');
+            $table->integer('value')->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('cat_user_types');
+        Schema::dropIfExists('table_promotions');
     }
 };
