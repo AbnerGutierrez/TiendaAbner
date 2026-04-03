@@ -11,6 +11,7 @@ class Order extends Model
         'name',
         'email',
         'phone',
+        'idUser',
         'address',
         'address2',
         'city',
@@ -26,5 +27,9 @@ class Order extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+    public function details()
+    {
+        return $this->hasOne(OrderDetail::class, 'order_id');
     }
 }

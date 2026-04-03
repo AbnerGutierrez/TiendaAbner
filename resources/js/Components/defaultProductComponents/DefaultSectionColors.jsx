@@ -1,19 +1,11 @@
-import { useState } from "react";
-
-export default function DefaultSectionColors({ colors, onSelect }) {
-    const [selectedColor, setSelectedColor] = useState(null);
-
-    const handleSelect = (color) => {
-        setSelectedColor(color);
-
-        if (onSelect) {
-            onSelect(color);
-        }
-    };
-
+export default function DefaultSectionColors({
+    colors,
+    selectedColor,
+    onSelect,
+}) {
     return (
         <div className="p-3 ">
-            <p className="text-lg text-gray-600 my-8 text-center">
+            <p className="text-2xl md:text-5xl font-bold leading-tight text-center text-gray-400 my-8">
                 Colores disponibles
             </p>
 
@@ -21,7 +13,7 @@ export default function DefaultSectionColors({ colors, onSelect }) {
                 {colors.map((color) => (
                     <button
                         key={color.id}
-                        onClick={() => handleSelect(color)}
+                        onClick={() => onSelect(color)}
                         className={`flex flex-col items-center justify-center p-6 rounded-2xl border transition-all
                         ${
                             selectedColor?.id === color.id
@@ -39,7 +31,7 @@ export default function DefaultSectionColors({ colors, onSelect }) {
 
                         {/* nombre */}
                         <span className="text-sm text-gray-700">
-                            {color.name}
+                            {color.description}
                         </span>
                     </button>
                 ))}

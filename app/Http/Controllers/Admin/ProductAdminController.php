@@ -93,14 +93,17 @@ class ProductAdminController extends Controller
                     'stock' => 'required|integer',
 
                     'colors' => 'array',
-                    'colors.*' => 'string',
+                    'colors.*.name' => 'required|string|max:100',
+                    'colors.*.value' => 'required|string',
 
                     'promotions' => 'array',
                     'promotions.*.type' => 'required|string',
                     'promotions.*.value' => 'nullable|numeric',
+                    'promotions.*.description' => 'nullable|string',
 
                     'features' => 'array',
-                    'features.*.text' => 'required|string',
+                    'features.*.title' => 'required|string',
+                    'features.*.description' => 'required|string',
                     'features.*.image' => 'required|image',
 
                     'contents' => 'array',
@@ -121,27 +124,31 @@ class ProductAdminController extends Controller
                     'fecha' => now(),
                 ]);
                 //Guardar colores
-                foreach ($request->colors as $color) {
+                foreach ($request->colors ?? [] as $color) {
                     Color::create([
                         'id_product' => $product->id,
-                        'color' => $color
+                        'description' => $color['name'],
+                        'color' => $color['value']
                     ]);
                 }
                 //Guardar promociones
-                foreach ($request->promotions as $promo) {
+                foreach ($request->promotions ?? [] as $promo) {
                     Promotion::create([
                         'id_product' => $product->id,
                         'promotion' => $promo['type'],
-                        'value' => $promo['value']
+                        'value' => $promo['value'] ?? null,
+                        'description' => $promo['description'] ?? null
                     ]);
                 }
                 //Guardar caracteristicas con imagenes.
-                foreach ($request->features as $feature) {
+                foreach ($request->features ?? [] as $feature) {
 
                     $path = $feature['image']->store('products/features', 'public');
+
                     Feature::create([
                         'id_product' => $product->id,
-                        'title' => $feature['text'],
+                        'title' => $feature['title'],
+                        'description' => $feature['description'],
                         'image' => $path
                     ]);
                 }
@@ -178,7 +185,6 @@ class ProductAdminController extends Controller
 
         return back()->with('success', 'Producto creado');
     }
-
 
     public function edit($id)
     {
@@ -223,28 +229,6 @@ class ProductAdminController extends Controller
         DB::transaction(function () use ($id) {
 
             $product = Product::findOrFail($id);
-
-            if ($product->image) {
-                Storage::disk('public')->delete($product->image);
-            }
-
-            $features = product_char::where('id_product', $id)->get();
-            foreach ($features as $feature) {
-                if ($feature->image) {
-                    Storage::disk('public')->delete($feature->image);
-                }
-            }
-            product_char::where('id_product', $id)->delete();
-
-            $advantages = advantages::where('id_product', $id)->get();
-
-            foreach ($advantages as $advantage) {
-                if ($advantage->image) {
-                    Storage::disk('public')->delete($advantage->image);
-                }
-            }
-            advantages::where('id_product', $id)->delete();
-
             $product->delete();
         });
 
@@ -327,13 +311,52 @@ class ProductAdminController extends Controller
 
     public function orders()
     {
-        $orders = Order::latest()->paginate(10);
+        $orders = Order::with(['details.color', 'details.promotion'])->latest()->paginate(10);
         $totalOrders = Order::count();
-        $totalSales = Order::sum('amount');
+        $totalSales = Order::where('status', '=', 'paid')->sum('amount');
         return Inertia::render('Admin/Products/Orders', ['orders' => $orders, 'totalOrders' => $totalOrders, 'totalSales' => $totalSales]);
     }
     public function data(Order $order)
     {
+        $order->load(['details.color', 'details.promotion', 'product']);
         return response()->json($order);
+    }
+
+    public function atender($id, Request $request)
+    {
+        try {
+            Order::where('id', '=', $id)->update(['status_shop' => $request->status]);
+            return response()->json([
+                'message' => 'orden actualizada correctamente',
+                'order_id' => $id
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error('Error al actualizar el estao de la compra' . $e->getMessage());
+            return response()->json([
+                'message' => 'Ocurrio un error al actualizar la orden',
+                'order_id' => $id
+            ], 400);
+        }
+    }
+    public function cancelar($id, Request $request)
+    {
+        try {
+            Order::where('id', '=', $id)->update(
+                [
+                    'status_shop' => $request->status,
+                    'status' => $request->status
+                ]
+            );
+            return response()->json([
+                'message' => 'orden cancelada correctamente',
+                'order_id' => $id
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error('Error al actualizar el estao de la compra' . $e->getMessage());
+            return response()->json([
+                'message' => 'Ocurrio un error al cancelar la orden',
+                'order_id' => $id
+            ], 400);
+        }
     }
 }

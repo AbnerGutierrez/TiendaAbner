@@ -28,7 +28,7 @@ export default function UpdatePasswordForm({ className = '' }) {
         e.preventDefault();
 
         put(route('password.update'), {
-            preserveScroll: true,
+            preserveScroll: false,
             onSuccess: () => reset(),
             onError: (errors) => {
                 if (errors.password) {

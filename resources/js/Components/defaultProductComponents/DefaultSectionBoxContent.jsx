@@ -1,4 +1,37 @@
-export default function DefaultSectionBoxContent({ boxContent }) {
+import { useState } from "react";
+import CompraModal from "../CompraModal";
+import { router } from "@inertiajs/react";
+
+export default function DefaultSectionBoxContent({
+    boxContent,
+    producto,
+    selectedColor,
+    selectedPromotion,
+    user,
+}) {
+    const isDisabled = !selectedColor || !selectedPromotion;
+    let missingMessage = "";
+
+    if (!selectedColor && !selectedPromotion) {
+        missingMessage = "Selecciona un color y una promoción";
+    } else if (!selectedColor) {
+        missingMessage = "Selecciona un color";
+    } else if (!selectedPromotion) {
+        missingMessage = "Selecciona una promoción";
+    }
+
+    const [openModal, setOpenModal] = useState(false);
+    const handleModal = (producto) => {
+        if (!user) {
+            setOpenModal(true);
+        } else {
+            router.get("/buy/checkOut", {
+                product_id: producto.uuid,
+                color: selectedColor,
+                promotion: selectedPromotion,
+            });
+        }
+    };
 
     return (
         <section className="bg-gray-50 py-24">
@@ -33,6 +66,30 @@ export default function DefaultSectionBoxContent({ boxContent }) {
                         );
                     })}
                 </div>
+                <button
+                    disabled={isDisabled}
+                    onClick={() => handleModal(producto)}
+                    className={`w-full py-4 rounded-xl uppercase text-sm tracking-wider transition shadow-md my-9
+                    ${
+                        isDisabled
+                            ? "bg-gray-400 cursor-not-allowed text-white"
+                            : "bg-black hover:bg-gray-800 text-white"
+                    }`}
+                >
+                    Comprar ahora
+                </button>
+                {isDisabled && (
+                    <small className="text-gray-500 text-sm flex justify-center">
+                        {missingMessage}
+                    </small>
+                )}
+                <CompraModal
+                    product={producto}
+                    open={openModal}
+                    selectedColor={selectedColor}
+                    selectedPromotions={selectedPromotion}
+                    onClose={() => setOpenModal(false)}
+                />
             </div>
         </section>
     );

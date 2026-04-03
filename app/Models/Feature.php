@@ -14,6 +14,7 @@ class Feature extends Model
     protected $fillable = [
         'id_product',
         'title',
+        'description',
         'image',
         'created_at',
         'updated_at',

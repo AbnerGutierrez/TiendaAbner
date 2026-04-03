@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('id_product');
             $table->string('color');
+            $table->string('description');
             $table->timestamps();
         });
     }

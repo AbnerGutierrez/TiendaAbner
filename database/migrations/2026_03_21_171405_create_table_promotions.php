@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('id_product');
             $table->string('promotion');
+            $table->string('description');
             $table->integer('value')->nullable();
             $table->timestamps();
         });

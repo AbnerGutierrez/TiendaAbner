@@ -4,7 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 import Modal from "../Modal";
 import ModalAtender from "./ModalAtender";
-
+import { router } from "@inertiajs/react";
 export default function OrdersTable({ orders }) {
     const [openModal, setOpenModal] = useState(false);
     const [data, setData] = useState(null);
@@ -24,6 +24,40 @@ export default function OrdersTable({ orders }) {
         setLoading(false);
     };
 
+    const atender = async (id) => {
+        try {
+            setLoading(true);
+
+            await axios.put(`/admin/atender/${id}`, {
+                status: "served",
+            });
+            setOpenModal(false);
+            router.reload({ only: ["orders", "totalOrders", "totalSales"] });
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
+    };
+    const cancelar = async (id) => {
+        try {
+            setLoading(true);
+
+            await axios.put(`/admin/cancelar/${id}`, {
+                status: "cancelled",
+            });
+
+            setOpenModal(false);
+            router.reload({ only: ["orders", "totalOrders", "totalSales"] });
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
+    };
+    const eliminar = () => {
+        console.log("Eliminando");
+    };
     return (
         <div className="mb-10 mx-4 my-4 ">
             <div className=" relative overflow-x-auto bg-white shadow-xs rounded-lg border border-default">
@@ -81,8 +115,8 @@ export default function OrdersTable({ orders }) {
                                             order.status === "paid"
                                                 ? "bg-green-100 text-green-800"
                                                 : order.status === "pending"
-                                                ? "bg-yellow-100 text-yellow-800"
-                                                : "bg-red-100 text-red-800"
+                                                  ? "bg-yellow-100 text-yellow-800"
+                                                  : "bg-red-100 text-red-800"
                                         }`}
                                     >
                                         {order.status}
@@ -94,9 +128,10 @@ export default function OrdersTable({ orders }) {
                                         ${
                                             order.status_shop === "served"
                                                 ? "bg-green-100 text-green-800"
-                                                : order.status_shop === "pending"
-                                                ? "bg-yellow-100 text-yellow-800"
-                                                : "bg-red-100 text-red-800"
+                                                : order.status_shop ===
+                                                    "pending"
+                                                  ? "bg-yellow-100 text-yellow-800"
+                                                  : "bg-red-100 text-red-800"
                                         }`}
                                     >
                                         {order.status_shop}
@@ -127,12 +162,9 @@ export default function OrdersTable({ orders }) {
                     loading={loading}
                     data={data} // Los datos que traes de tu API
                     onClose={() => setOpenModal(false)}
-                    onAtender={() => {
-                        console.log("Atendiendo ticket...");
-                        // Tu lógica aquí (ej: update en base de datos)
-                    }}
-                    onCancelar={() => console.log("Cancelando...")}
-                    onContactar={() => console.log("Contactando...")}
+                    onAtender={() => atender(data.id)}
+                    onCancelar={() => cancelar(data.id)}
+                    onEliminar={eliminar}
                 />
             )}
 

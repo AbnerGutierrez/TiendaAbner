@@ -46,7 +46,7 @@ export default function GuestBuyNavBar() {
                     {/* MENU DESKTOP */}
                     <ul className="hidden md:flex gap-6 text-gray-700">
                         <li>
-                            <Link href="#" className="hover:text-black">
+                            <Link href="/" className="hover:text-black">
                                 Inicio
                             </Link>
                         </li>
@@ -72,7 +72,7 @@ export default function GuestBuyNavBar() {
                     <ul className="flex flex-col gap-3 text-gray-700 px-4 pb-4">
                         <li>
                             <Link
-                                href="#"
+                                href="/"
                                 className="block py-2 border-b"
                                 onClick={() => setOpen(false)}
                             >

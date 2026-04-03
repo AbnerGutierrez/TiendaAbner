@@ -7,7 +7,7 @@ export default function ModalAtender({
     onClose,
     onAtender,
     onCancelar,
-    onContactar,
+    onEliminar,
 }) {
     if (!isOpen) return null;
 
@@ -75,7 +75,41 @@ export default function ModalAtender({
                                             Artículo
                                         </th>
                                         <td className="px-4 py-3 text-gray-800 font-medium">
-                                            {data.product_id}
+                                            {data.product.description}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th className="px-4 py-3 bg-gray-50 text-left font-semibold text-gray-600">
+                                            Color
+                                        </th>
+                                        <td className="px-4 py-3 text-gray-800 font-medium">
+                                            <div className="flex items-center gap-2">
+                                                {/* Indicador de color */}
+                                                <span
+                                                    className="w-5 h-5 rounded-full border border-gray-300"
+                                                    style={{
+                                                        backgroundColor:
+                                                            data.details.color
+                                                                .color,
+                                                    }}
+                                                ></span>
+
+                                                {/* Nombre del color */}
+                                                <span>
+                                                    {
+                                                        data.details.color
+                                                            .description
+                                                    }
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th className="px-4 py-3 bg-gray-50 text-left font-semibold text-gray-600">
+                                            Promocion
+                                        </th>
+                                        <td className="px-4 py-3 text-gray-800 font-medium">
+                                            {data.details.promotion.promotion}
                                         </td>
                                     </tr>
                                     <tr>
@@ -86,7 +120,8 @@ export default function ModalAtender({
                                             {data.city || "Sin ciudad"}{" "}
                                             {data.state || "Sin estado"}{" "}
                                             {data.zip || "Sin CP"}{" "}
-                                            {data.address || "Sin dirección"}{" "}
+                                            {data.address ||
+                                                "Sin dirección"}{" "}
                                         </td>
                                     </tr>
                                     <tr>
@@ -94,7 +129,8 @@ export default function ModalAtender({
                                             Referencias
                                         </th>
                                         <td className="px-4 py-3 text-gray-800 text-xs">
-                                            {data.address2 || "Sin dirección"}{" "}
+                                            {data.address2 ||
+                                                "Sin dirección"}{" "}
                                         </td>
                                     </tr>
 
@@ -118,9 +154,9 @@ export default function ModalAtender({
 
                 {/* Pie con Botones de Acción */}
                 <div className="px-6 py-4 bg-gray-50 flex flex-col sm:flex-row gap-2 justify-center border-t border-gray-100">
-                    <SecondaryButton>Despachar</SecondaryButton>
-                    <SecondaryButton>Cancelar</SecondaryButton>
-                    <SecondaryButton>Eliminar</SecondaryButton>
+                    <SecondaryButton onClick={onAtender}>Despachar</SecondaryButton>
+                    <SecondaryButton onClick={onCancelar}>Cancelar</SecondaryButton>
+                    <SecondaryButton onClick={onEliminar}>Eliminar</SecondaryButton>
                 </div>
             </div>
         </div>

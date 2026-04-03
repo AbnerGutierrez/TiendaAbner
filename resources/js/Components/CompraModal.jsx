@@ -4,38 +4,44 @@ import { router } from "@inertiajs/react";
 import PrimaryButton from "./PrimaryButton";
 import SecondaryButton from "./SecondaryButton";
 
-export default function CompraModal({ open, onClose, product }) {
+export default function CompraModal({
+    open,
+    onClose,
+    product,
+    selectedColor,
+    selectedPromotions,
+}) {
+    // console.log(selectedColor, selectedPromotions);
     useEffect(() => {
         document.body.style.overflow = open ? "hidden" : "auto";
     }, [open]);
 
-    const handleGuestCheckout = () => {
+    const saveIntent = () => {
         localStorage.setItem(
             "checkout_intent",
             JSON.stringify({
                 product_id: product.uuid,
+                color: selectedColor,
+                promotion: selectedPromotions,
                 from: "product_modal",
             }),
         );
+    };
 
+    const handleGuestCheckout = () => {
+        saveIntent();
         onClose();
-
-        router.get(route("guest.mainProduct.checkout"), {
+        router.get(route("buy.checkOut"), {
             product_id: product.uuid,
+            color: selectedColor,
+            promotion: selectedPromotions,
         });
     };
 
     const handleRegister = () => {
-        localStorage.setItem(
-            "checkout_intent",
-            JSON.stringify({
-                product_id: product.uuid,
-                from: "product_modal",
-            }),
-        );
-
+        saveIntent();
         onClose();
-        router.visit("/login");
+        router.visit("/login"); 
     };
 
     return (

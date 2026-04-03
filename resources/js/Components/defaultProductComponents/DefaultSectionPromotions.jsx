@@ -1,19 +1,11 @@
-import { useState } from "react";
-
-export default function DefaultSectionPromotions({ promotions, onSelect }) {
-    const [selectedPromotion, setSelectedPromotion] = useState(null);
-
-    const handleSelect = (promotion) => {
-        setSelectedPromotion(promotion);
-
-        if (onSelect) {
-            onSelect(promotion);
-        }
-    };
-
+export default function DefaultSectionPromotions({
+    promotions,
+    selectedPromotion,
+    onSelect,
+}) {
     return (
         <div className="mt-10 py-2">
-            <p className="text-lg text-gray-700 mb-6 text-center font-medium">
+            <p className="text-2xl md:text-5xl font-bold leading-tight text-center text-gray-400 mb-6">
                 Promociones disponibles
             </p>
 
@@ -21,7 +13,7 @@ export default function DefaultSectionPromotions({ promotions, onSelect }) {
                 {promotions.map((promotion) => (
                     <button
                         key={promotion.id}
-                        onClick={() => handleSelect(promotion)}
+                        onClick={() => onSelect(promotion)}
                         className={`text-left p-5 rounded-2xl border transition-all duration-200
                         ${
                             selectedPromotion?.id === promotion.id
@@ -35,12 +27,12 @@ export default function DefaultSectionPromotions({ promotions, onSelect }) {
                             </h3>
 
                             <p className="text-sm text-gray-600">
-                                Este porcentaje se descontara de tu compra
+                                {promotion.description}
                             </p>
 
                             {promotion.value && (
                                 <span className="text-blue-600 font-bold text-sm">
-                                    %{promotion.value} OFF
+                                    % {promotion.value} OFF
                                 </span>
                             )}
                         </div>

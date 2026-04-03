@@ -2,8 +2,8 @@ export default function DefaultSectionFeatures({ features }) {
     return (
         <section className=" py-4 bg-white">
             <div className="max-w-6xl mx-auto px-4 space-y-24">
-                <p className="text-lg text-gray-700 mb-6 text-center font-medium">
-                    Caracteristicas del produto
+                <p className="text-2xl md:text-5xl font-bold leading-tight text-center text-gray-400">
+                    Conócelo a detalle.
                 </p>
                 {features.map((feature, index) => {
                     const image = "storage/" + feature.image;
@@ -35,9 +35,7 @@ export default function DefaultSectionFeatures({ features }) {
                                 </h3>
 
                                 <p className="text-gray-600">
-                                    Descripcion de la caracteristica Lorem,
-                                    ipsum dolor.lorem20 Lorem ipsum dolor sit
-                                    amet consectetur.
+                                    {feature.description}
                                 </p>
                             </div>
                         </div>

@@ -6,33 +6,58 @@ import DefaultSectionColors from "@/Components/defaultProductComponents/DefaultS
 import DefaultSectionCompra from "@/Components/defaultProductComponents/DefaultSectionCompra";
 import DefaultSectionFeatures from "@/Components/defaultProductComponents/DefaultSectionFeatures";
 import DefaultSectionPromotions from "@/Components/defaultProductComponents/DefaultSectionPromotions";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import GuestBuyLayout from "@/Layouts/GuestBuyLayout";
+import { usePage } from "@inertiajs/react";
+import { useState } from "react";
 
 export default function CepilloDucha({ producto }) {
+    const { auth } = usePage().props;
+
+    const [selectedColor, setSelectedColor] = useState(null);
+    const [selectedPromotion, setSelectedPromotion] = useState(null);
+
+    const Layout = auth.user ? AuthenticatedLayout : GuestBuyLayout;
+
     const handleColorSelect = (color) => {
-        console.log("Color seleccionado:", color);
+        setSelectedColor(color);
+        // console.log(color);
     };
     const handlePromotionSelect = (promotion) => {
-        console.log("promocion seleccionada:", promotion);
+        setSelectedPromotion(promotion);
+        // console.log(promotion);
     };
     return (
         <>
-            <GuestBuyLayout>
+            <Layout user={auth.user}>
                 <DefaultHero producto={producto} />
                 <DefaultSectionColors
                     colors={producto.colors}
+                    selectedColor={selectedColor}
                     onSelect={handleColorSelect}
                 />
                 <DefaultSectionPromotions
                     promotions={producto.promotions}
+                    selectedPromotion={selectedPromotion}
                     onSelect={handlePromotionSelect}
                 />
                 <DiscountBanner />
-                <DefaultSectionCompra producto={producto} />
+                <DefaultSectionCompra
+                    producto={producto}
+                    selectedColor={selectedColor}
+                    selectedPromotion={selectedPromotion}
+                    user={auth.user}
+                />
                 <DefaultSectionFeatures features={producto.features} />
-                <DefaultSectionBoxContent boxContent={producto.box_content} />
+                <DefaultSectionBoxContent
+                    boxContent={producto.box_content}
+                    producto={producto}
+                    selectedColor={selectedColor}
+                    selectedPromotion={selectedPromotion}
+                    user={auth.user}
+                />
                 <DefaultComprarAqui />
-            </GuestBuyLayout>
+            </Layout>
         </>
     );
 }

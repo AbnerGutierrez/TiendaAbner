@@ -20,13 +20,13 @@ export default function DefaultComprarAqui() {
         },
         {
             title: "Garantía incluida",
-            description: "Devuelve tu producto dentro de los primeros 30 días.",
+            description: "Devuelve tu producto dentro de los primeros 30 días. (Productos participantes)",
             icon: faRotateLeft,
         },
     ];
 
     return (
-        <section className="bg-gray-100 py-16">
+        <section className=" py-16">
             <div className="max-w-xl mx-auto px-6">
                 {items.map((item, index) => (
                     <div
@@ -42,7 +42,7 @@ export default function DefaultComprarAqui() {
                             {item.title}
                         </p>
 
-                        <p className="text-sm text-gray-700 hover:underline cursor-pointer">
+                        <p className="text-sm text-gray-700 ">
                             {item.description}
                         </p>
                     </div>
