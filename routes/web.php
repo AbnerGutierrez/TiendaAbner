@@ -5,9 +5,19 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Productos\ProductController;
 use App\Models\Product;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+
+Route::get('/crear-enlace', function () {
+    try {
+        Artisan::call('storage:link');
+        return "Enlace creado con éxito.";
+    } catch (\Exception $e) {
+        return "Error al crear el enlace: " . $e->getMessage();
+    }
+});
 
 Route::get('/test-mail', function () {
     Mail::raw('Correo de prueba', function ($message) {
