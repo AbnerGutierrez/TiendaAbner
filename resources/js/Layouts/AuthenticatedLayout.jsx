@@ -5,6 +5,7 @@ import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import { Link, usePage } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 import FooterLayout from "./FooterLayout";
+import logo from "../../../public/images/LogoHorizontal.png";
 
 export default function AuthenticatedLayout({ header, children }) {
     const { url } = usePage();
@@ -26,7 +27,7 @@ export default function AuthenticatedLayout({ header, children }) {
                         <div className="flex">
                             <div className="flex shrink-0 items-center">
                                 <Link href="/dashboard">
-                                    <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" />
+                                    <img src={logo} alt="Logo" className="h-7 w-auto" />
                                 </Link>
                             </div>
 
@@ -79,6 +80,13 @@ export default function AuthenticatedLayout({ header, children }) {
                                             as="button"
                                         >
                                             Cerrar sesión
+                                        </Dropdown.Link>
+                                        <Dropdown.Link
+                                            href='/rastrear_pedido'
+                                            method="get"
+                                            as="button"
+                                        >
+                                            Rastrear pedido
                                         </Dropdown.Link>
                                     </Dropdown.Content>
                                 </Dropdown>
@@ -156,6 +164,9 @@ export default function AuthenticatedLayout({ header, children }) {
                         <div className="mt-3 space-y-1">
                             <ResponsiveNavLink href={route("profile.edit")}>
                                 Mi perfil
+                            </ResponsiveNavLink>
+                            <ResponsiveNavLink href="/rastrear_pedido">
+                                Rastrear pedido
                             </ResponsiveNavLink>
                             <ResponsiveNavLink
                                 method="post"

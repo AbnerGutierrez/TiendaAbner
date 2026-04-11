@@ -8,10 +8,9 @@ export default function CompraModal({
     open,
     onClose,
     product,
-    selectedColor,
+    selectedColors,
     selectedPromotions,
 }) {
-    // console.log(selectedColor, selectedPromotions);
     useEffect(() => {
         document.body.style.overflow = open ? "hidden" : "auto";
     }, [open]);
@@ -21,8 +20,8 @@ export default function CompraModal({
             "checkout_intent",
             JSON.stringify({
                 product_id: product.uuid,
-                color: selectedColor,
-                promotion: selectedPromotions,
+                colors: selectedColors.map((c) => c.id),
+                promotion_id: selectedPromotions.id,
                 from: "product_modal",
             }),
         );
@@ -33,7 +32,7 @@ export default function CompraModal({
         onClose();
         router.get(route("buy.checkOut"), {
             product_id: product.uuid,
-            color: selectedColor,
+            colors: selectedColors.map((c) => c.id),
             promotion: selectedPromotions,
         });
     };
@@ -41,7 +40,7 @@ export default function CompraModal({
     const handleRegister = () => {
         saveIntent();
         onClose();
-        router.visit("/login"); 
+        router.visit("/login");
     };
 
     return (

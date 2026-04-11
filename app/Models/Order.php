@@ -30,6 +30,10 @@ class Order extends Model
     }
     public function details()
     {
-        return $this->hasOne(OrderDetail::class, 'order_id');
+        return $this->hasMany(OrderDetail::class, 'order_id');
+    }
+    public function infoTracking()
+    {
+        return $this->hasOne(Order_tracking::class, 'order_id');
     }
 }

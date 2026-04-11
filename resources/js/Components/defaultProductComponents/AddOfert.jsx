@@ -10,16 +10,26 @@ export default function AddPromotionComponent({ data, setData }) {
     const addPromotion = () => {
         if (!type) return;
 
-        const newPromotion = {
+        let newPromotion = {
             type,
-            value,
             description,
         };
+
+        if (type === "discount") {
+            newPromotion.value = value;
+        }
+
+        if (type === "moreforless") {
+            newPromotion.quantity = quantity;
+            newPromotion.price = price;
+        }
 
         setData("promotions", [...data.promotions, newPromotion]);
 
         setType("");
         setValue("");
+        setQuantity("");
+        setPrice("");
         setDescription("");
         setShowCard(false);
     };
@@ -30,12 +40,14 @@ export default function AddPromotionComponent({ data, setData }) {
         setData("promotions", newPromotions);
     };
 
+    const [quantity, setQuantity] = useState("");
+    const [price, setPrice] = useState("");
+
     return (
         <>
             <InputLabel className="mb-1" value="Promociones" />
 
             <div className="shadow-md border-2 rounded-md p-3">
-
                 {/* Lista de promociones */}
                 <div className="flex gap-3 flex-wrap mb-3">
                     {data.promotions.map((promo, index) => (
@@ -50,6 +62,12 @@ export default function AddPromotionComponent({ data, setData }) {
                             {promo.value && (
                                 <div className="text-xs text-gray-600">
                                     Valor: {promo.value}
+                                </div>
+                            )}
+
+                            {promo.type === "moreforless" && (
+                                <div className="text-xs text-gray-600">
+                                    {promo.quantity} x ${promo.price}
                                 </div>
                             )}
 
@@ -82,7 +100,6 @@ export default function AddPromotionComponent({ data, setData }) {
                 {/* Card para agregar */}
                 {showCard && (
                     <div className="border rounded p-3 flex flex-col gap-2 bg-gray-50">
-
                         <select
                             value={type}
                             onChange={(e) => setType(e.target.value)}
@@ -91,8 +108,32 @@ export default function AddPromotionComponent({ data, setData }) {
                             <option value="">Tipo de promoción</option>
                             <option value="discount">Descuento</option>
                             <option value="2x1">2x1</option>
-                            <option value="envio_gratis">Envío gratis</option>
+                            <option value="moreforless">
+                                4 unidades X $tanto.
+                            </option>
                         </select>
+
+                        {type === "moreforless" && (
+                            <div className="flex gap-2">
+                                <input
+                                    type="number"
+                                    placeholder="Cantidad"
+                                    value={quantity}
+                                    onChange={(e) =>
+                                        setQuantity(e.target.value)
+                                    }
+                                    className="border rounded px-2 py-1 w-1/2"
+                                />
+
+                                <input
+                                    type="number"
+                                    placeholder="Precio total $"
+                                    value={price}
+                                    onChange={(e) => setPrice(e.target.value)}
+                                    className="border rounded px-2 py-1 w-1/2"
+                                />
+                            </div>
+                        )}
 
                         {type === "discount" && (
                             <input

@@ -18,27 +18,13 @@ export default function OrdersTable({ orders }) {
         try {
             const response = await axios.get(route("admin.data", order_id));
             setData(response.data);
+            // console.log(response.data);
         } catch (error) {
             console.log(error);
         }
         setLoading(false);
     };
 
-    const atender = async (id) => {
-        try {
-            setLoading(true);
-
-            await axios.put(`/admin/atender/${id}`, {
-                status: "served",
-            });
-            setOpenModal(false);
-            router.reload({ only: ["orders", "totalOrders", "totalSales"] });
-        } catch (error) {
-            console.error(error);
-        } finally {
-            setLoading(false);
-        }
-    };
     const cancelar = async (id) => {
         try {
             setLoading(true);
@@ -162,7 +148,6 @@ export default function OrdersTable({ orders }) {
                     loading={loading}
                     data={data} // Los datos que traes de tu API
                     onClose={() => setOpenModal(false)}
-                    onAtender={() => atender(data.id)}
                     onCancelar={() => cancelar(data.id)}
                     onEliminar={eliminar}
                 />

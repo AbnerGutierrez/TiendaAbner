@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Mail\SendOrder;
 use Illuminate\Http\Request;
 use App\Models\product_char;
 use App\Models\ProductImage;
@@ -11,10 +12,12 @@ use App\Models\BoxContent;
 use App\Models\Color;
 use App\Models\Feature;
 use App\Models\Order;
+use App\Models\Order_tracking;
 use App\Models\Product;
 use App\Models\Promotion;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
@@ -99,6 +102,8 @@ class ProductAdminController extends Controller
                     'promotions' => 'array',
                     'promotions.*.type' => 'required|string',
                     'promotions.*.value' => 'nullable|numeric',
+                    'promotions.*.quantity' => 'nullable|numeric',
+                    'promotions.*.price' => 'nullable|numeric',
                     'promotions.*.description' => 'nullable|string',
 
                     'features' => 'array',
@@ -133,12 +138,22 @@ class ProductAdminController extends Controller
                 }
                 //Guardar promociones
                 foreach ($request->promotions ?? [] as $promo) {
-                    Promotion::create([
-                        'id_product' => $product->id,
-                        'promotion' => $promo['type'],
-                        'value' => $promo['value'] ?? null,
-                        'description' => $promo['description'] ?? null
-                    ]);
+                    if ($promo['type'] === "moreforless") {
+                        Promotion::create([
+                            'id_product' => $product->id,
+                            'promotion' => $promo['type'],
+                            'quantity' => $promo['quantity'] ?? null,
+                            'price' => $promo['price'] ?? null,
+                            'description' => $promo['description'] ?? null
+                        ]);
+                    } else {
+                        Promotion::create([
+                            'id_product' => $product->id,
+                            'promotion' => $promo['type'],
+                            'value' => $promo['value'] ?? null,
+                            'description' => $promo['description'] ?? null
+                        ]);
+                    }
                 }
                 //Guardar caracteristicas con imagenes.
                 foreach ($request->features ?? [] as $feature) {
@@ -322,19 +337,30 @@ class ProductAdminController extends Controller
         return response()->json($order);
     }
 
-    public function atender($id, Request $request)
+    public function atender($orderId, Request $request)
     {
+        // dd($orderId, $request);
         try {
-            Order::where('id', '=', $id)->update(['status_shop' => $request->status]);
+            $InfonuevoTrack = [
+                'order_id' => $orderId,
+                'number_r' => $request->tracking,
+                'company' => $request->company
+            ];
+
+            Order_tracking::create($InfonuevoTrack);
+            $order = Order::with('infoTracking')->where('id', '=', $orderId)->first();
+            // dd($order);
+            Order::where('id', '=', $orderId)->update(['status_shop' => "delibery"]);
+            Mail::to($order->email)->send(new SendOrder($order));
             return response()->json([
                 'message' => 'orden actualizada correctamente',
-                'order_id' => $id
+                'order_id' => $orderId
             ], 200);
         } catch (\Exception $e) {
             Log::error('Error al actualizar el estao de la compra' . $e->getMessage());
             return response()->json([
                 'message' => 'Ocurrio un error al actualizar la orden',
-                'order_id' => $id
+                'order_id' => $orderId
             ], 400);
         }
     }

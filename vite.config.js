@@ -19,9 +19,9 @@ export default defineConfig({
 
 // export default defineConfig({
 //     server: {
-//         host: "0.0.0.0", // Esto permite que Vite escuche conexiones externas
+//         host: "0.0.0.0", 
 //         hmr: {
-//             host: "192.168.0.36", // REEMPLAZA ESTO CON TU IP LOCAL
+//             host: "192.168.0.36", 
 //         },
 //     },
 //     plugins: [

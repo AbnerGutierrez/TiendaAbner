@@ -8,7 +8,7 @@ import AddFeature from "@/Components/defaultProductComponents/AddFeature";
 
 export default function FormProductFaster({ data, setData, errors }) { 
     
-    //Funcionalidades para las el contenido de la caja
+    //Funcionalidades para el contenido de la caja
     const [contentText, setContentText] = useState("");
     const [contentImage, setContentImage] = useState(null);
 

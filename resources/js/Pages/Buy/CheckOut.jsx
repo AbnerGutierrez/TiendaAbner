@@ -5,14 +5,20 @@ import { useState } from "react";
 import SuccessView from "@/Components/SuccessView";
 import { usePage } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import Swal from "sweetalert2";
 export default function checkOut({ product }) {
+    // console.log(product);
     const { auth } = usePage().props;
     //Descuento
     const discount =
         product.promotion?.promotion === "discount"
             ? product.price * (product.promotion.value / 100)
             : 0;
-    const finalPrice = product.price - discount;
+    const finalPrice =
+        product.promotion?.promotion === "moreforless"
+            ? product.promotion?.price
+            : product.price - discount;
+
     const Layout = auth.user ? AuthenticatedLayout : GuestBuyLayout;
 
     const [form, setForm] = useState({
@@ -24,7 +30,7 @@ export default function checkOut({ product }) {
         city: "",
         state: "",
         zip: "",
-        color: product.color,
+        colors: product.colors,
         product: product.promotion,
     });
 
@@ -58,15 +64,45 @@ export default function checkOut({ product }) {
             });
 
             setOrderId(data.id);
+
+            // Alerta de éxito opcional
+            Swal.fire({
+                icon: "success",
+                title: "¡Orden creada!",
+                text: "Ahora puedes proceder con el pago",
+                timer: 2000,
+                showConfirmButton: false,
+            });
         } catch (error) {
-            alert("Error al crear la orden");
+            if (error.response) {
+                const { status, data } = error.response;
+
+                if (status === 422 && data.error_type === "out_of_stock") {
+                    await Swal.fire({
+                        icon: "error",
+                        title: "Producto agotado",
+                        text:
+                            data.message ||
+                            "No hay unidades disponibles de este producto",
+                        confirmButtonColor: "#d33",
+                        confirmButtonText: "Entendido",
+                    });
+                }
+            } else {
+                await Swal.fire({
+                    icon: "error",
+                    title: "Error de conexión",
+                    text: "No se pudo conectar con el servidor. Verifica tu conexión a internet",
+                    confirmButtonText: "OK",
+                });
+            }
         } finally {
             setLoading(false);
         }
     };
 
     const handlePaymentSuccess = (details) => {
-        console.log("Pago exitoso:", details);
+        // console.log("Pago exitoso:", details);
         setPaid(true);
     };
 
@@ -151,18 +187,26 @@ export default function checkOut({ product }) {
                             </p>
                         </div>
 
-                        <div className="border-t pt-4 flex justify-between items-center font-semibold">
-                            <span>Color</span>
+                        <div className="border-t pt-4 flex flex-col justify-between items-center font-semibold">
+                            <span>Colores</span>
 
-                            <div className="flex items-center gap-2">
-                                <div
-                                    className="w-5 h-5 rounded-full border"
-                                    style={{
-                                        backgroundColor: product.color.color,
-                                    }}
-                                ></div>
-
-                                <span>{product.color.description}</span>
+                            <div className="flex gap-2">
+                                {product.colors.map((color) => (
+                                    <div
+                                        key={color.id}
+                                        className="flex items-center gap-1"
+                                    >
+                                        <div
+                                            className="w-5 h-5 rounded-full border"
+                                            style={{
+                                                backgroundColor: color.color,
+                                            }}
+                                        />
+                                        <span className="text-xs">
+                                            {color.description}
+                                        </span>
+                                    </div>
+                                ))}
                             </div>
                         </div>
 
@@ -206,6 +250,37 @@ export default function checkOut({ product }) {
                                         <span>
                                             ${finalPrice.toFixed(2)} MXN
                                         </span>
+                                    </div>
+                                </>
+                            )}
+                        {product.promotion &&
+                            product.promotion.promotion === "moreforless" && (
+                                <>
+                                    <div className="border-t pt-4 space-y-3">
+                                        {/* Promoción */}
+                                        <div className="flex justify-between text-sm text-blue-600 font-medium">
+                                            <span>Promoción</span>
+                                            <span>Más por menos</span>
+                                        </div>
+
+                                        {/* Detalle de la promoción */}
+                                        <div className="flex items-center justify-center gap-2 text-lg font-semibold text-blue-700 bg-blue-50 py-2 rounded-md">
+                                            <span>
+                                                {product.promotion.quantity}
+                                            </span>
+                                            <span className="text-gray-500">
+                                                x
+                                            </span>
+                                            <span>
+                                                ${product.promotion.price}
+                                            </span>
+                                        </div>
+
+                                        {/* Total */}
+                                        <div className="border-t pt-3 flex justify-between text-lg font-bold text-green-700">
+                                            <span>Total</span>
+                                            <span>${finalPrice} MXN</span>
+                                        </div>
                                     </div>
                                 </>
                             )}

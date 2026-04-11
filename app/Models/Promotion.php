@@ -15,6 +15,8 @@ class Promotion extends Model
         'promotion',
         'description',
         'value',
+        'quantity',
+        'price',
         'created_at',
         'updated_at',
     ];

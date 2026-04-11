@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 import { Link } from "@inertiajs/react";
 import DefaultDiscountBar from "@/Components/defaultProductComponents/DefaultDiscountBar";
+import logo from "../../../public/images/LogoHorizontal.png";
 
 export default function GuestBuyNavBar() {
     const [open, setOpen] = useState(false);
 
     return (
         <>
-            <nav className="bg-white shadow p-4  fixed top-0 left-0 w-full z-20 ">
-                <div className="container mx-auto flex justify-between items-center">
+            <DefaultDiscountBar />
+            <nav className="sticky top-0 bg-white shadow p-4 left-0 w-full z-20 ">
+                <div className=" container mx-auto flex justify-between items-center">
                     {/* Logo */}
-                    <h1 className="font-bold text-xl">La Plaza Web</h1>
-
+                    <img src={logo} alt="Logo" className="h-7 w-auto" />
                     {/* BOTÓN MOBILE */}
                     <button
                         className="md:hidden text-gray-700 focus:outline-none"
@@ -46,18 +47,43 @@ export default function GuestBuyNavBar() {
                     {/* MENU DESKTOP */}
                     <ul className="hidden md:flex gap-6 text-gray-700">
                         <li>
-                            <Link href="/" className="hover:text-black">
+                            <Link
+                                href="/cepillo_ducha"
+                                className="hover:text-black"
+                            >
                                 Inicio
                             </Link>
                         </li>
                         <li>
-                            <Link href="/register" className="hover:text-black">
-                                Registrarme
+                            <Link
+                                href="/politica_privacidad"
+                                className="hover:text-black"
+                            >
+                                Politicas de privacidad
                             </Link>
                         </li>
                         <li>
-                            <Link href="/login" className="hover:text-black">
-                                Iniciar sesión
+                            <Link
+                                href="/ventas_reembolsos"
+                                className="hover:text-black"
+                            >
+                                Ventas y reembolsos
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                href="/aviso_legal"
+                                className="hover:text-black"
+                            >
+                                Aviso legal
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                href="/rastrear_pedido"
+                                className="hover:text-black"
+                            >
+                                Rastrear pedido
                             </Link>
                         </li>
                     </ul>
@@ -66,13 +92,13 @@ export default function GuestBuyNavBar() {
                 {/* MENU MOBILE ANIMADO */}
                 <div
                     className={`md:hidden overflow-hidden transition-all duration-300 ${
-                        open ? "max-h-60 opacity-100" : "max-h-0 opacity-0"
+                        open ? "max-h-72 opacity-100" : "max-h-0 opacity-0"
                     }`}
                 >
-                    <ul className="flex flex-col gap-3 text-gray-700 px-4 pb-4">
+                    <ul className="flex flex-col gap-3 text-gray-700 mx px-4 pb-4 pt-4">
                         <li>
                             <Link
-                                href="/"
+                                href="/cepillo_ducha"
                                 className="block py-2 border-b"
                                 onClick={() => setOpen(false)}
                             >
@@ -81,26 +107,43 @@ export default function GuestBuyNavBar() {
                         </li>
                         <li>
                             <Link
-                                href="/register"
+                                href="/politica_privacidad"
                                 className="block py-2 border-b"
                                 onClick={() => setOpen(false)}
                             >
-                                Registrarme
+                                Politicas de privacidad
                             </Link>
                         </li>
                         <li>
                             <Link
-                                href="/login"
+                                href="/ventas_reembolsos"
                                 className="block py-2 border-b"
                                 onClick={() => setOpen(false)}
                             >
-                                Iniciar sesión
+                                Ventas y reembolsos
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                href="/aviso_legal"
+                                className="block py-2 border-b"
+                                onClick={() => setOpen(false)}
+                            >
+                                Aviso legal
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                href="/rastrear_pedido"
+                                className="block py-2 border-b"
+                                onClick={() => setOpen(false)}
+                            >
+                                Rastrear pedido
                             </Link>
                         </li>
                     </ul>
                 </div>
             </nav>
-            <DefaultDiscountBar/>
         </>
     );
 }

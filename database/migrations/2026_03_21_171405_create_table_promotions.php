@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('promotion');
             $table->string('description');
             $table->integer('value')->nullable();
+            $table->integer('quantity')->nullable();
+            $table->integer('price')->nullable();
             $table->timestamps();
         });
     }

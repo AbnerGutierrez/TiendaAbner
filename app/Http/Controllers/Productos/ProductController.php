@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Productos;
 
 use App\Http\Controllers\Controller;
+use App\Mail\OrderCompletedMail;
+use App\Models\Color;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -10,8 +12,10 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Order;
 use App\Models\OrderDetail;
+use App\Models\Promotion;
 use App\Services\PayPalService;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class ProductController extends Controller
 {
@@ -51,19 +55,27 @@ class ProductController extends Controller
         // dd($producto->boxContent);
         return Inertia::render('Products/CepilloDucha', ['producto' => $producto]);
     }
+    public function show_beeswax_food_wrap()
+    {
+        $producto = Product::with(['colors', 'promotions', 'features', 'boxContent', 'images'])->find(4);
+        // dd($producto->boxContent);
+        return Inertia::render('Products/CepilloDucha', ['producto' => $producto]);
+    }
 
     //Compra
 
     public function checkOut(Request $request)
     {
-        // dd($request);    
+        // dd($request);
         abort_if(!$request->product_id, 404);
         $product = Product::where('uuid', $request->product_id)->firstOrFail();
+        $colors = Color::whereIn('id', $request->colors)->get();
         $images = DB::table('product_images')
             ->where('id_product', $product->id)
             ->pluck('image')
             ->map(fn($img) => Storage::url($img));
-
+        $promotion = Promotion::where('id', $request->promotion_id)->first();
+        // dd($promotion,$request);
         return Inertia::render('Buy/CheckOut', [
             'product' => [
                 'id' => $product->id,
@@ -72,16 +84,16 @@ class ProductController extends Controller
                 'price' => $product->price,
                 'stock' => $product->stock,
                 'images' => $images,
-                'color' => $request->color,
-                'promotion' => $request->promotion,
+                'colors' => $colors,
+                'promotion' => $request->promotion ?? $promotion,
             ],
         ]);
     }
 
     public function CreateOrder(Request $request)
     {
-        $order = false;
         $idUser = auth()->id();
+
         $request->validate([
             'product_id' => 'required|exists:products,id',
             'name' => 'required|string',
@@ -95,14 +107,17 @@ class ProductController extends Controller
         ]);
 
         try {
-
             $product = Product::findOrFail($request->product_id);
 
             if ($product->stock <= 0) {
-                return response()->json(['message' => 'Producto sin stock'], 422);
+                return response()->json([
+                    'message' => 'No hay unidades disponibles de este producto',
+                    'error_type' => 'out_of_stock'
+                ], 422);
             }
 
-            $amount = $product->price;
+            $amount = $request->product["promotion"] === "moreforless" ? $request->product["price"] : $product->price;
+
             if ($request->product['promotion'] == 'discount') {
                 $discount = ($product->price * $request->product['value']) / 100;
                 $amount = $product->price - $discount;
@@ -121,17 +136,24 @@ class ProductController extends Controller
                 'zip' => $request->zip,
                 'amount' => $amount,
             ]);
+
             //guardar detalles del producto
-            OrderDetail::create([
-                'order_id' => $order->id,
-                'color_id' => $request->color['id'],
-                'promotion_id' => $request->product['id'],
-            ]);
+            foreach ($request->colors as $color) {
+                OrderDetail::create([
+                    'order_id' => $order->id,
+                    'color_id' => $color['id'],
+                    'promotion_id' => $request->product['id'],
+                ]);
+            }
+
+            return response()->json($order);
         } catch (\Exception $e) {
             Log::error('ERROR AL GUARDAR LA COMPRA===>' . $e->getMessage());
+            return response()->json([
+                'message' => 'Error al procesar la orden. Intenta de nuevo.',
+                'error_type' => 'server_error'
+            ], 500);
         }
-        // dd($order);
-        return response()->json($order);
     }
 
     public function PayPalCreateOrder(Request $request, PayPalService $paypal)
@@ -215,6 +237,8 @@ class ProductController extends Controller
                 ]);
 
                 $order->product->decrement('stock');
+
+                Mail::to($order->email)->send(new OrderCompletedMail($order));
 
                 return ['status' => 'success', 'order' => $order];
             });

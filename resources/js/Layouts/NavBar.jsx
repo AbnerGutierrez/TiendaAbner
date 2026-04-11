@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "@inertiajs/react";
-
+import logo from "../../../public/images/LogoHorizontal.png";
 export default function NavBar() {
     const [open, setOpen] = useState(false);
 
@@ -8,7 +8,7 @@ export default function NavBar() {
         <nav className="bg-white shadow p-4 fixed top-0 left-0 w-full z-20">
             <div className="container mx-auto flex justify-between items-center">
                 {/* Logo */}
-                <h1 className="font-bold text-xl">Mi Navegador</h1>
+                <img src={logo} alt="Logo" className="h-7 w-auto" />
 
                 {/* BOTÓN MOBILE */}
                 <button
@@ -44,13 +44,37 @@ export default function NavBar() {
                 {/* MENU DESKTOP */}
                 <ul className="hidden md:flex gap-6 text-gray-700">
                     <li>
-                        <Link href="/" className="hover:text-black">
+                        <Link
+                            href="/cepillo_ducha"
+                            className="hover:text-black"
+                        >
                             Inicio
                         </Link>
                     </li>
                     <li>
-                        <Link  href={route("products.showlist")} className="hover:text-black">
-                            Productos
+                        <Link
+                            href="/politica_privacidad"
+                            className="hover:text-black"
+                        >
+                            Politicas de privacidad
+                        </Link>
+                    </li>
+                    <li>
+                        <Link
+                            href="/ventas_reembolsos"
+                            className="hover:text-black"
+                        >
+                            Ventas y reembolsos
+                        </Link>
+                    </li>
+                    <li>
+                        <Link href="/aviso_legal" className="hover:text-black">
+                            Aviso legal
+                        </Link>
+                    </li>
+                    <li>
+                        <Link href="/rastrear_pedido" className="hover:text-black">
+                            Rastrear pedido
                         </Link>
                     </li>
                     <li>
@@ -69,7 +93,7 @@ export default function NavBar() {
             {/* MENU MOBILE ANIMADO */}
             <div
                 className={`md:hidden overflow-hidden transition-all duration-300 ${
-                    open ? "max-h-60 opacity-100" : "max-h-0 opacity-0"
+                    open ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
                 }`}
             >
                 <ul className="flex flex-col gap-3 text-gray-700 px-4 pb-4">
@@ -84,11 +108,38 @@ export default function NavBar() {
                     </li>
                     <li>
                         <Link
-                           href={route("products.showlist")}
+                            href="/politica_privacidad"
                             className="block py-2 border-b"
                             onClick={() => setOpen(false)}
                         >
-                            Productos
+                            Politicas de privacidad
+                        </Link>
+                    </li>
+                    <li>
+                        <Link
+                            href="/ventas_reembolsos"
+                            className="block py-2 border-b"
+                            onClick={() => setOpen(false)}
+                        >
+                            Ventas y reembolsos
+                        </Link>
+                    </li>
+                    <li>
+                        <Link
+                            href="/aviso_legal"
+                            className="block py-2 border-b"
+                            onClick={() => setOpen(false)}
+                        >
+                            Aviso legal
+                        </Link>
+                    </li>
+                    <li>
+                        <Link
+                            href="/rastrear_pedido"
+                            className="block py-2 border-b"
+                            onClick={() => setOpen(false)}
+                        >
+                            Rastrear pedido
                         </Link>
                     </li>
                     <li>

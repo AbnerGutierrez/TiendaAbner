@@ -30,9 +30,15 @@ export default function SuccessView({ product, finalPrice }) {
         );
     }
 
+    const promotion = product?.promotion;
+    const discount =
+        promotion?.promotion === "discount"
+            ? (product.price * promotion.value) / 100
+            : 0;
+
     return (
         <div className="max-w-3xl mx-auto py-20 px-4">
-            {/* Header */}
+            {/* HEADER */}
             <div className="text-center mb-10">
                 <div className="bg-green-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
                     <span className="text-4xl">✅</span>
@@ -41,12 +47,11 @@ export default function SuccessView({ product, finalPrice }) {
                 <h1 className="text-3xl font-bold">¡Gracias por tu compra!</h1>
 
                 <p className="text-gray-600 mt-2">
-                    Hemos enviado los detalles del pedido a tu correo
-                    electrónico.
+                    Hemos enviado los detalles del pedido a tu correo.
                 </p>
             </div>
 
-            {/* Product */}
+            {/* PRODUCTO */}
             <div className="bg-white rounded-2xl border shadow-sm p-6 grid md:grid-cols-2 gap-6">
                 <img
                     src={product.images?.[0]}
@@ -55,6 +60,7 @@ export default function SuccessView({ product, finalPrice }) {
                 />
 
                 <div className="flex flex-col justify-between">
+                    {/* INFO PRODUCTO */}
                     <div>
                         <p className="text-xs text-gray-500 uppercase tracking-wider">
                             Producto comprado
@@ -69,32 +75,65 @@ export default function SuccessView({ product, finalPrice }) {
                         </p>
                     </div>
 
-                    <div className="space-y-3 mt-6">
-                        {product.color && (
-                            <div className="flex justify-between items-center border-t pt-3">
-                                <span className="text-sm font-medium">
-                                    Color
-                                </span>
+                    {/* PROMOCIONES */}
+                    {promotion && (
+                        <div className="border-t pt-4 space-y-3 mt-4">
+                            {promotion.promotion === "discount" && (
+                                <>
+                                    <div className="flex justify-between text-red-500">
+                                        <span>
+                                            Descuento ({promotion.value}%)
+                                        </span>
+                                        <span>
+                                            - ${discount.toFixed(2)} MXN
+                                        </span>
+                                    </div>
+                                </>
+                            )}
 
-                                <div className="flex items-center gap-2">
+                            {promotion.promotion === "2x1" && (
+                                <div className="flex justify-between text-blue-500">
+                                    <span>Promoción</span>
+                                    <span>2x1</span>
+                                </div>
+                            )}
+
+                            {promotion.promotion === "moreforless" && (
+                                <div className="bg-blue-50 rounded-md py-2 text-center text-blue-700 font-semibold">
+                                    {promotion.quantity} x ${promotion.price}
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {/* COLORES */}
+                    <div className="space-y-2 mt-6">
+                        <p className="text-sm font-semibold">
+                            Colores seleccionados
+                        </p>
+
+                        <div className="flex flex-wrap gap-3">
+                            {product.colors.map((color) => (
+                                <div
+                                    key={color.id}
+                                    className="flex items-center gap-2 text-xs"
+                                >
                                     <div
                                         className="w-5 h-5 rounded-full border"
                                         style={{
-                                            backgroundColor:
-                                                product.color.color,
+                                            backgroundColor: color.color,
                                         }}
                                     />
-                                    <span className="text-sm">
-                                        {product.color.description}
-                                    </span>
+                                    {color.description}
                                 </div>
-                            </div>
-                        )}
-
-                        <div className="flex justify-between items-center border-t pt-3 font-semibold">
-                            <span>Total</span>
-                            <span>${finalPrice} MXN</span>
+                            ))}
                         </div>
+                    </div>
+
+                    {/* TOTAL */}
+                    <div className="flex justify-between items-center border-t pt-4 mt-6 text-lg font-bold text-green-700">
+                        <span>Total</span>
+                        <span>${finalPrice} MXN</span>
                     </div>
                 </div>
             </div>

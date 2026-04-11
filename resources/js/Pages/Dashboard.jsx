@@ -9,6 +9,7 @@ export default function Dashboard({ productos }) {
 
         if (intentoCompra) {
             const datos = JSON.parse(intentoCompra);
+            console.log(datos);
             router.get("/buy/checkOut", datos);
             localStorage.removeItem("checkout_intent");
         }

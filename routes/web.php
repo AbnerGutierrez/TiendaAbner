@@ -3,12 +3,38 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Productos\ProductController;
+use App\Models\Product;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+Route::get('/test-mail', function () {
+    Mail::raw('Correo de prueba', function ($message) {
+        $message->to('lunadevbusiness@gmail.com')
+            ->subject('Test Laravel');
+    });
+
+    return 'Correo enviado';
+});
+
 Route::get('/', function () {
-    return Inertia::render('Welcome', []);
+    $productos = Product::with('images')->get();
+    return Inertia::render('Welcome', ['productos' => $productos]);
+});
+
+Route::get('/politica_privacidad', function () {
+    return Inertia::render('politicas/Privacidad', []);
+});
+Route::get('/ventas_reembolsos', function () {
+    return Inertia::render('politicas/VentasRembolsos', []);
+});
+Route::get('/aviso_legal', function () {
+    return Inertia::render('politicas/AvisoLegal', []);
+});
+
+Route::get('/rastrear_pedido', function () {
+    return Inertia::render('RastrearPedido');
 });
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
@@ -18,6 +44,7 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['au
 Route::controller(ProductController::class)->name('products.')->group(function () {
 
     Route::get('/cepillo_ducha', 'showCepilloDucha')->name('showCepilloDucha');
+    Route::get('/beeswax_food_wrap', 'show_beeswax_food_wrap')->name('show_beeswax_food_wrap');
 });
 
 Route::middleware('auth')->group(function () {

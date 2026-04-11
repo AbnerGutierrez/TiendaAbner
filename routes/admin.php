@@ -16,7 +16,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/orders', 'orders')->name('orders');
         Route::get('/data/{order}', 'data')->name('data');
 
-        Route::put('/atender/{id}', 'atender')->name('atender');
+        Route::post('/atender/{orderId}', 'atender')->name('atender');
         Route::put('/cancelar/{id}', 'cancelar')->name('cancelar');
 
         Route::delete('/products/delete/{id}', 'delete')->name('products.delete');

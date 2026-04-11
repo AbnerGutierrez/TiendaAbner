@@ -11,19 +11,26 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 export default function DefaultSectionCompra({
     producto,
-    selectedColor,
+    selectedColors,
     selectedPromotion,
     user,
 }) {
-    const isDisabled = !selectedColor || !selectedPromotion;
+    const hasPromotion = !!selectedPromotion;
+    const colorCount = selectedColors.length;
+    const requiredColors = selectedPromotion?.value || 0;
+
+    const isDisabled = !hasPromotion || colorCount !== requiredColors;
+
     let missingMessage = "";
 
-    if (!selectedColor && !selectedPromotion) {
+    if (!hasPromotion && colorCount === 0) {
         missingMessage = "Selecciona un color y una promoción";
-    } else if (!selectedColor) {
-        missingMessage = "Selecciona un color";
-    } else if (!selectedPromotion) {
+    } else if (!hasPromotion) {
         missingMessage = "Selecciona una promoción";
+    } else if (colorCount === 0) {
+        missingMessage = "Selecciona un color";
+    } else if (colorCount !== requiredColors) {
+        missingMessage = `Debes seleccionar ${requiredColors} colores`;
     }
     const [imagenActiva, setImagenActiva] = useState(
         producto.images?.length
@@ -39,20 +46,22 @@ export default function DefaultSectionCompra({
         } else {
             router.get("/buy/checkOut", {
                 product_id: producto.uuid,
-                color: selectedColor,
+                color: selectedColors,
                 promotion: selectedPromotion,
             });
         }
     };
 
+    let oferta = parseFloat(producto.price) * 1.3;
+
     return (
         <section className="py-20 ">
-            <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-start px-4">
+            <div className="max-w-6xl mx-auto grid grid-cols-1  gap-12 items-start px-4">
                 {/* INFORMACIÓN */}
-                <div className="space-y-6 bg-white rounded-2xl p-8 shadow-sm border">
+                <div className="space-y-6 bg-white rounded-2xl p-8 shadow-sm ">
                     {/* Badges */}
                     <div className="flex gap-2">
-                        <span className="bg-red-100 text-xs px-3 py-1 rounded-full">
+                        <span className="bg-orange-100 text-xs px-3 py-1 rounded-full">
                             En stock
                         </span>
 
@@ -83,7 +92,7 @@ export default function DefaultSectionCompra({
                         </div>
 
                         {/* Miniaturas */}
-                        <div className="flex gap-2 overflow-x-auto pb-2">
+                        <div className="flex gap-2 overflow-x-auto pb-2 md:justify-center">
                             {producto.images?.map((img, index) => {
                                 const url = "storage/" + img.image;
 
@@ -101,10 +110,27 @@ export default function DefaultSectionCompra({
                     </div>
 
                     {/* Precio */}
-                    <div className="flex items-center gap-4  py-4">
-                        <span className="text-4xl font-bold text-black">
-                            ${producto.price}{" "}
-                            <small className="text-2xl">MXN</small>
+                    <div className="flex flex-col items-start gap-1 py-4">
+                        {/* Precio anterior */}
+                        <span className="text-sm text-gray-500 line-through">
+                            ${oferta} <small>MXN</small>
+                        </span>
+
+                        {/* Precio con descuento */}
+                        <div className="flex items-center gap-2">
+                            <span className="text-4xl font-bold text-black">
+                                ${producto.price}{" "}
+                                <small className="text-xl">MXN</small>
+                            </span>
+
+                            <span className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+                                -30% 
+                            </span>
+                        </div>
+
+                        {/* Texto de incentivo */}
+                        <span className="text-sm text-green-600 font-semibold">
+                             Oferta por tiempo limitado 
                         </span>
                     </div>
                     {/* Botón */}
@@ -148,7 +174,7 @@ export default function DefaultSectionCompra({
                     <CompraModal
                         product={producto}
                         open={openModal}
-                        selectedColor={selectedColor}
+                        selectedColors={selectedColors}
                         selectedPromotions={selectedPromotion}
                         onClose={() => setOpenModal(false)}
                     />

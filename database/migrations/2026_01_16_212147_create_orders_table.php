@@ -34,7 +34,7 @@ return new class extends Migration
             $table->string('payment_id')->nullable();
             $table->string('paypal_order_id')->nullable()->unique();
             $table->enum('status', ['pending', 'paid', 'cancelled'])->default('pending');
-            $table->enum('status_shop', ['pending', 'served', 'cancelled'])->default('pending');
+            $table->enum('status_shop', ['pending', 'served', 'delibery','done','cancelled'])->default('pending');
 
             $table->timestamps();
         });

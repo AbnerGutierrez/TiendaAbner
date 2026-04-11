@@ -2,8 +2,7 @@ export default function DefaultSectionImages({ imagen, producto, onClick }) {
     return (
         <button
             onClick={onClick}
-            // Añadimos flex-shrink-0 aquí
-            className="flex-shrink-0 borde overflow-hidden hover:scale-105 transition"
+            className="flex-shrink-0 overflow-hidden hover:scale-105 transition rounded-lg"
         >
             <img
                 src={imagen}

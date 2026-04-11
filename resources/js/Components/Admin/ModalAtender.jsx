@@ -1,16 +1,18 @@
+import { useState } from "react";
 import SecondaryButton from "../SecondaryButton";
+import ModalAddInfo from "./ModalAddInfo";
 
 export default function ModalAtender({
     data,
     isOpen,
     loading,
     onClose,
-    onAtender,
     onCancelar,
     onEliminar,
 }) {
     if (!isOpen) return null;
-
+    const [openModalAddInfo, setOpenModalAddInfo] = useState(false);
+    console.log(data);
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             {/* Fondo con desenfoque */}
@@ -83,33 +85,66 @@ export default function ModalAtender({
                                             Color
                                         </th>
                                         <td className="px-4 py-3 text-gray-800 font-medium">
-                                            <div className="flex items-center gap-2">
-                                                {/* Indicador de color */}
-                                                <span
-                                                    className="w-5 h-5 rounded-full border border-gray-300"
-                                                    style={{
-                                                        backgroundColor:
-                                                            data.details.color
-                                                                .color,
-                                                    }}
-                                                ></span>
+                                            <div className="flex flex-wrap gap-3">
+                                                {data.details.map((detail) => (
+                                                    <div
+                                                        key={detail.id}
+                                                        className="flex items-center gap-2"
+                                                    >
+                                                        {/* Indicador de color */}
+                                                        <span
+                                                            className="w-5 h-5 rounded-full border border-gray-300"
+                                                            style={{
+                                                                backgroundColor:
+                                                                    detail.color
+                                                                        .color,
+                                                            }}
+                                                        ></span>
 
-                                                {/* Nombre del color */}
-                                                <span>
-                                                    {
-                                                        data.details.color
-                                                            .description
-                                                    }
-                                                </span>
+                                                        {/* Nombre del color */}
+                                                        <span>
+                                                            {
+                                                                detail.color
+                                                                    .description
+                                                            }
+                                                        </span>
+                                                    </div>
+                                                ))}
                                             </div>
                                         </td>
                                     </tr>
                                     <tr>
                                         <th className="px-4 py-3 bg-gray-50 text-left font-semibold text-gray-600">
-                                            Promocion
+                                            Promoción
                                         </th>
+
                                         <td className="px-4 py-3 text-gray-800 font-medium">
-                                            {data.details.promotion.promotion}
+                                            {
+                                                data.details[0].promotion
+                                                    .promotion
+                                            }
+
+                                            {data.details[0].promotion
+                                                .promotion ===
+                                                "moreforless" && (
+                                                <div className="flex gap-2 text-blue-600 font-semibold">
+                                                    <span>
+                                                        {
+                                                            data.details[0]
+                                                                .promotion
+                                                                .quantity
+                                                        }
+                                                    </span>
+                                                    <span>x</span>
+                                                    <span>
+                                                        $
+                                                        {
+                                                            data.details[0]
+                                                                .promotion.price
+                                                        }
+                                                    </span>
+                                                </div>
+                                            )}
                                         </td>
                                     </tr>
                                     <tr>
@@ -154,11 +189,24 @@ export default function ModalAtender({
 
                 {/* Pie con Botones de Acción */}
                 <div className="px-6 py-4 bg-gray-50 flex flex-col sm:flex-row gap-2 justify-center border-t border-gray-100">
-                    <SecondaryButton onClick={onAtender}>Despachar</SecondaryButton>
-                    <SecondaryButton onClick={onCancelar}>Cancelar</SecondaryButton>
-                    <SecondaryButton onClick={onEliminar}>Eliminar</SecondaryButton>
+                    <SecondaryButton
+                     onClick={() => setOpenModalAddInfo(true)}>
+                        Despachar
+                    </SecondaryButton>
+                    <SecondaryButton onClick={onCancelar}>
+                        Cancelar
+                    </SecondaryButton>
+                    <SecondaryButton onClick={onEliminar}>
+                        Imprimir
+                    </SecondaryButton>
                 </div>
             </div>
+            {openModalAddInfo && (
+                <ModalAddInfo
+                orderId={data.id}
+                isOpen={openModalAddInfo}
+                onClose={() => setOpenModalAddInfo(false)} />
+            )}
         </div>
     );
 }

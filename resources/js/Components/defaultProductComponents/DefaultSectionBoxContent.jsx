@@ -5,19 +5,26 @@ import { router } from "@inertiajs/react";
 export default function DefaultSectionBoxContent({
     boxContent,
     producto,
-    selectedColor,
+    selectedColors,
     selectedPromotion,
     user,
 }) {
-    const isDisabled = !selectedColor || !selectedPromotion;
+    const hasPromotion = !!selectedPromotion;
+    const colorCount = selectedColors.length;
+    const requiredColors = selectedPromotion?.value || 0;
+
+    const isDisabled = !hasPromotion || colorCount !== requiredColors;
+
     let missingMessage = "";
 
-    if (!selectedColor && !selectedPromotion) {
+    if (!hasPromotion && colorCount === 0) {
         missingMessage = "Selecciona un color y una promoción";
-    } else if (!selectedColor) {
-        missingMessage = "Selecciona un color";
-    } else if (!selectedPromotion) {
+    } else if (!hasPromotion) {
         missingMessage = "Selecciona una promoción";
+    } else if (colorCount === 0) {
+        missingMessage = "Selecciona un color";
+    } else if (colorCount !== requiredColors) {
+        missingMessage = `Debes seleccionar ${requiredColors} colores`;
     }
 
     const [openModal, setOpenModal] = useState(false);
@@ -27,7 +34,7 @@ export default function DefaultSectionBoxContent({
         } else {
             router.get("/buy/checkOut", {
                 product_id: producto.uuid,
-                color: selectedColor,
+                color: selectedColors,
                 promotion: selectedPromotion,
             });
         }
@@ -42,7 +49,7 @@ export default function DefaultSectionBoxContent({
                 </h2>
 
                 {/* Grid */}
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
+                <div className="grid grid-cols-[repeat(auto-fit,minmax(140px,1fr))] gap-10">
                     {boxContent.map((item) => {
                         const image = "storage/" + item.image;
 
@@ -86,7 +93,7 @@ export default function DefaultSectionBoxContent({
                 <CompraModal
                     product={producto}
                     open={openModal}
-                    selectedColor={selectedColor}
+                    selectedColors={selectedColors}
                     selectedPromotions={selectedPromotion}
                     onClose={() => setOpenModal(false)}
                 />
