@@ -6,7 +6,7 @@ export default function WelcomeS({ productos }) {
     return (
         <>
             {/* HERO */}
-            <section className="relative w-full min-h-screen flex items-center justify- py-16 px-4 bg-[url('/images/herobeb.jpg')] bg-contain md:bg-center ">
+            <section className="relative w-full min-h-screen flex items-center justify-center py-16 px-4 bg-[url('/images/herobeb.jpg')] bg-contain md:bg-center">
                 <div className="absolute inset-0 bg-black/60"></div>
 
                 <div className="relative z-10 max-w-5xl text-center text-white mx-auto ">
@@ -26,8 +26,6 @@ export default function WelcomeS({ productos }) {
                         Descubre productos de calidad con envío rápido y pago
                         seguro.
                     </motion.p>
-
-                  
                 </div>
             </section>
 
@@ -37,8 +35,6 @@ export default function WelcomeS({ productos }) {
                     <DefaultComprarAqui />
                 </div>
             </section>
-
-    
         </>
     );
 }

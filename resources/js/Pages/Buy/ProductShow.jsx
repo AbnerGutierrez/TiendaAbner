@@ -1,6 +1,5 @@
 import React from 'react';
-import { Inertia } from '@inertiajs/inertia';
-import { Link, usePage } from '@inertiajs/inertia-react';
+
 
 export default function ProductShow({ product }) {
   return (
