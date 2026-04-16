@@ -7,7 +7,7 @@ export default function DefaultHostProducts() {
         {
             id: 1,
             name: "Beeswax food wrap",
-            price: 499,
+            price: 549,
             image: envoltorio,
             url: "/beeswax_food_wrap",
         },
