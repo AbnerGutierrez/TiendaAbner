@@ -66,7 +66,7 @@ export default function DefaultHero({ producto }) {
         <section className="relative max-w-6xl mx-auto px-6 pt-6 md:pt-28 pb-20 grid md:grid-cols-2 gap-10 items-center">
             {/* TEXTO */}
             <div className="text-center md:text-left">
-                <span className="text-red-500">New</span>
+                <span className="text-red-500 animate-pulse"> ULTIMAS UNIDADES </span>
                 <h1 className="text-4xl md:text-5xl font-bold leading-tight">
                     {producto.title}
                 </h1>

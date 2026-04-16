@@ -11,20 +11,20 @@ export default function DefaultHostProducts() {
             image: envoltorio,
             url: "/beeswax_food_wrap",
         },
-        {
-            id: 2,
-            name: "Blanqueador dental",
-            price: 399,
-            image: dientes,
-            url: "/teeth_whitening",
-        },
-        {
-            id: 3,
-            name: "Spray depilatorio suave",
-            price: 699,
-            image: spray,
-            url: "/gentle_removal",
-        },
+        // {
+        //     id: 2,
+        //     name: "Blanqueador dental",
+        //     price: 399,
+        //     image: dientes,
+        //     url: "/teeth_whitening",
+        // },
+        // {
+        //     id: 3,
+        //     name: "Spray depilatorio suave",
+        //     price: 699,
+        //     image: spray,
+        //     url: "/gentle_removal",
+        // },
     ];
 
     return (

@@ -47,10 +47,7 @@ export default function GuestBuyNavBar() {
                     {/* MENU DESKTOP */}
                     <ul className="hidden md:flex gap-6 text-gray-700">
                         <li>
-                            <Link
-                                href="/cepillo_ducha"
-                                className="hover:text-black"
-                            >
+                            <Link href="/" className="hover:text-black">
                                 Inicio
                             </Link>
                         </li>
@@ -84,6 +81,14 @@ export default function GuestBuyNavBar() {
                                 className="hover:text-black"
                             >
                                 Rastrear pedido
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                href="/soporte"
+                                className="hover:text-black"
+                            >
+                                Soporte técnico
                             </Link>
                         </li>
                     </ul>
@@ -92,13 +97,13 @@ export default function GuestBuyNavBar() {
                 {/* MENU MOBILE ANIMADO */}
                 <div
                     className={`md:hidden overflow-hidden transition-all duration-300 ${
-                        open ? "max-h-72 opacity-100" : "max-h-0 opacity-0"
+                        open ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
                     }`}
                 >
                     <ul className="flex flex-col gap-3 text-gray-700 mx px-4 pb-4 pt-4">
                         <li>
                             <Link
-                                href="/cepillo_ducha"
+                                href="/"
                                 className="block py-2 border-b"
                                 onClick={() => setOpen(false)}
                             >
@@ -139,6 +144,15 @@ export default function GuestBuyNavBar() {
                                 onClick={() => setOpen(false)}
                             >
                                 Rastrear pedido
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                href="/soporte"
+                                className="block py-2 border-b"
+                                onClick={() => setOpen(false)}
+                            >
+                                Soporte técnico
                             </Link>
                         </li>
                     </ul>

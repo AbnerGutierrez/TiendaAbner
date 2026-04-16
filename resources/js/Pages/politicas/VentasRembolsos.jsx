@@ -19,12 +19,12 @@ export default function VentasRembolsos() {
                         <p className="max-w-2xl mx-auto text-slate-600 leading-relaxed">
                             En{" "}
                             <span className="font-semibold text-slate-800">
-                                Nebluzo
+                                Lunadev
                             </span>
                             , buscamos ofrecer productos de calidad y una
                             experiencia de compra segura en{" "}
                             <span className="text-blue-600">
-                                www.nebluzo.com
+                                www.lunadev.mx
                             </span>
                             .
                         </p>
@@ -153,7 +153,7 @@ export default function VentasRembolsos() {
                             <div className="bg-amber-400/10 border border-amber-400/20 p-4 rounded-xl text-amber-200 text-sm">
                                 <p className="font-bold mb-2">
                                     Para solicitarlo, envía un correo a
-                                    soporte@nebluzo.com incluyendo:
+                                    lunadevbusiness@gmail.com incluyendo:
                                 </p>
                                 <ul className="list-disc pl-5 opacity-90">
                                     <li>Número de pedido</li>
@@ -199,7 +199,7 @@ export default function VentasRembolsos() {
                                 <div className="flex items-center space-x-2 bg-slate-100 px-6 py-3 rounded-full hover:bg-slate-200 transition-colors cursor-pointer">
                                     <span className="text-lg">📧</span>
                                     <span className="text-sm font-semibold text-slate-700">
-                                        soporte@nebluzo.com
+                                        lunadevbusiness@gmail.com
                                     </span>
                                 </div>
                                 <div className="flex items-center space-x-2 bg-slate-100 px-6 py-3 rounded-full hover:bg-slate-200 transition-colors cursor-pointer">

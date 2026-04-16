@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('order_id');
             $table->string('color_id');
+            $table->integer('color_quantity');
             $table->string('promotion_id');
             $table->timestamps();
         });

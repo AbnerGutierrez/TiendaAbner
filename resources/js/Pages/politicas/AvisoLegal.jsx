@@ -20,11 +20,11 @@ export default function AvisoLegal() {
                                 El presente Aviso Legal regula el acceso y uso
                                 del sitio web
                                 <span className="font-bold text-slate-800 underline ml-1 text-blue-600">
-                                    www.nebluzo.com
+                                    www.lunadev.mx
                                 </span>
                                 , propiedad de{" "}
                                 <span className="font-semibold text-slate-800">
-                                    nebluzo
+                                    lunadev
                                 </span>
                                 , con domicilio en Tomas Alva Edison 9,
                                 Tabacalera, Cuauhtémoc, 06030 Ciudad de México,
@@ -50,24 +50,24 @@ export default function AvisoLegal() {
                                         <p className="font-bold text-slate-900">
                                             Operado por:
                                         </p>
-                                        <p>
-                                            nebluzo
-                                        </p>
+                                        <p>lunadev</p>
                                     </div>
                                     <div>
                                         <p className="font-bold text-slate-900">
                                             Domicilio:
                                         </p>
-                                        <p>Tomas Alva Edison 9,
-                                Tabacalera, Cuauhtémoc, 06030 Ciudad de México,
-                                CDMX</p>
+                                        <p>
+                                            Tomas Alva Edison 9, Tabacalera,
+                                            Cuauhtémoc, 06030 Ciudad de México,
+                                            CDMX
+                                        </p>
                                     </div>
                                     <div>
                                         <p className="font-bold text-slate-900">
                                             Contacto:
                                         </p>
                                         <p className="text-blue-600 underline">
-                                            soporte@nebluzo.com
+                                            lunadevbusiness@gmail.com
                                         </p>
                                     </div>
                                 </div>
@@ -118,7 +118,7 @@ export default function AvisoLegal() {
                                     propiedad de
                                     <span className="font-bold text-slate-800">
                                         {" "}
-                                        nebluzo y fuentes privadas
+                                        lunadev y fuentes privadas
                                     </span>
                                     . Se prohíbe la reproducción o modificación
                                     sin autorización escrita.
@@ -161,7 +161,7 @@ export default function AvisoLegal() {
                                     tribunales competentes en:
                                 </p>
                                 <p className="mt-2 font-mono text-amber-400">
-                                     Cuauhtémoc CDMX
+                                    Cuauhtémoc CDMX
                                 </p>
                             </section>
 

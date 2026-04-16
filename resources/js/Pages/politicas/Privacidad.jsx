@@ -17,14 +17,14 @@ export default function Privacidad() {
                         <p className="mt-4 text-gray-600 leading-relaxed">
                             En{" "}
                             <span className="font-semibold text-gray-800">
-                                Nebluzo
+                                Lunadev
                             </span>
                             , nos comprometemos a proteger la privacidad y la
                             seguridad de los datos personales de nuestros
                             usuarios y clientes. Esta política describe cómo
                             gestionamos tu información en{" "}
                             <span className="text-blue-600 underline">
-                                www.neblozo.com
+                                www.lunadev.mx
                             </span>
                             .
                         </p>
@@ -38,7 +38,7 @@ export default function Privacidad() {
                             </h2>
                             <p className="leading-relaxed">
                                 <span className="font-medium text-gray-900">
-                                    Nebluzo
+                                    Lunadev
                                 </span>
                                 , con domicilio en Tomas Alva Edison 9, Tabacalera, Cuauhtémoc, 06030 Ciudad de México, CDMX, es
                                 responsable del tratamiento de tus datos. Para
@@ -47,7 +47,7 @@ export default function Privacidad() {
                             <div className="mt-2 inline-flex items-center px-3 py-1 bg-gray-100 rounded-md text-sm font-medium">
                                 📧{" "}
                                 <span className="ml-2 text-blue-700 underline">
-                                    soporte@nebluzo.com
+                                    lunadevbusiness@gmail.com
                                 </span>
                             </div>
                         </section>
@@ -94,7 +94,7 @@ export default function Privacidad() {
                                         Envío de promociones, novedades y mejora
                                         de experiencia. Puedes cancelar esto
                                         enviando un correo a
-                                        soporte@nebluzo.com.
+                                        lunadevbusiness@gmail.com.
                                     </p>
                                 </div>
                             </div>
@@ -146,7 +146,7 @@ export default function Privacidad() {
                             <p className="text-sm">
                                 Envía tu solicitud a{" "}
                                 <span className="text-blue-400">
-                                    soporte@nebluzo.com
+                                    lunadevbusiness@gmail.com
                                 </span>{" "}
                                 indicando tu nombre completo y el derecho que
                                 deseas ejercer.

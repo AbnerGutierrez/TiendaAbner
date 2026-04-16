@@ -23,7 +23,7 @@ export default function DefaultSectionPromotions({
                 {promotions.map((promotion, index) => {
                     const isLast = index === promotions.length - 1;
 
-                    return (
+                    return (  
                         <button
                             key={promotion.id}
                             onClick={() => onSelect(promotion)}

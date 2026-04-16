@@ -45,7 +45,7 @@ export default function NavBar() {
                 <ul className="hidden md:flex gap-6 text-gray-700">
                     <li>
                         <Link
-                            href="/cepillo_ducha"
+                            href="/"
                             className="hover:text-black"
                         >
                             Inicio

@@ -24,7 +24,7 @@ class Product extends Model
         'price',
         'fecha',
         'publish_at',
-        'image',
+        'colorsv',
         'created_at',
         'updated_at',
     ];

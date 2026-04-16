@@ -7,7 +7,7 @@ export default function DefaultSectionColors({
     const isDisabled = !selectedPromotion;
 
     return (
-        <div className="p-3">
+        <div className="p-3 pb-14">
             <p className="text-2xl md:text-5xl font-bold leading-tight text-center text-gray-400 my-8">
                 Colores disponibles
             </p>

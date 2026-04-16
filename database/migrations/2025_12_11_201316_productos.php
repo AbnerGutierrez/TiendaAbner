@@ -22,7 +22,7 @@ return new class extends Migration
             $table->decimal('price', 10, 2);
             $table->date('fecha');
             $table->timestamp('publish_at');
-            $table->string('image')->nullable(); 
+            $table->integer('colorsv')->nullable(); 
             $table->timestamps();
         });
     }

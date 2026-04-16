@@ -22,7 +22,6 @@ class ProductController extends Controller
 
     public function showlist()
     {
-
         $productos = Product::with('images')->get();
         return Inertia::render('ListaProductos', [
             'productos' => $productos,
@@ -236,24 +235,46 @@ class ProductController extends Controller
         }
     }
 
+    public function send(Request $request)
+    {
+        $data = $request->validate([
+            'nombre' => 'required|string|max:255',
+            'email' => 'required|email',
+            'asunto' => 'required|string|max:255',
+            'mensaje' => 'required|string',
+        ]);
+
+        Mail::raw(
+            "Nombre: {$data['nombre']}\n" .
+                "Email: {$data['email']}\n\n" .
+                "Mensaje:\n{$data['mensaje']}",
+            function ($message) use ($data) {
+                $message->to('TU_CORREO@gmail.com') // ← aquí va tu correo
+                    ->subject($data['asunto']);
+            }
+        );
+
+        return back()->with('success', 'Mensaje enviado correctamente');
+    }
+
     ////////////////////////////////////////////     PRODUCTOS ENLACES    ///////////////////////////////////////////////////////////////
 
     public function show_beeswax_food_wrap()
     {
         $producto = Product::with(['colors', 'promotions', 'features', 'boxContent', 'images'])->find(1);
         // dd($producto->boxContent);
-        return Inertia::render('Products/CepilloDucha', ['producto' => $producto]);
+        return Inertia::render('Products/LandingProduct', ['producto' => $producto]);
     }
     public function gentle_removal()
     {
         $producto = Product::with(['colors', 'promotions', 'features', 'boxContent', 'images'])->find(4);
         // dd($producto->boxContent);
-        return Inertia::render('Products/CepilloDucha', ['producto' => $producto]);
+        return Inertia::render('Products/LandingProduct', ['producto' => $producto]);
     }
     public function teethwhitening()
     {
         $producto = Product::with(['colors', 'promotions', 'features', 'boxContent', 'images'])->find(2);
         // dd($producto->boxContent);
-        return Inertia::render('Products/CepilloDucha', ['producto' => $producto]);
+        return Inertia::render('Products/LandingProduct', ['producto' => $producto]);
     }
 }

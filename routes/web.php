@@ -49,7 +49,9 @@ Route::get('/aviso_legal', function () {
 Route::get('/rastrear_pedido', function () {
     return Inertia::render('RastrearPedido');
 });
-
+Route::get('/soporte', function () {
+    return Inertia::render('Soporte');
+});
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 
@@ -58,6 +60,8 @@ Route::controller(ProductController::class)->name('products.')->group(function (
     Route::get('/beeswax_food_wrap', 'show_beeswax_food_wrap')->name('show_beeswax_food_wrap');
     Route::get('/gentle_removal', 'gentle_removal')->name('gentle_removal');
     Route::get('/teeth_whitening', 'teethwhitening')->name('teeth-whitening');
+
+    Route::post('/soporte', 'send')->name('soporte.send');
 });
 
 Route::middleware('auth')->group(function () {
