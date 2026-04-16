@@ -9,6 +9,8 @@ import DefaultSectionFeatures from "@/Components/defaultProductComponents/Defaul
 import DefaultSectionPromotions from "@/Components/defaultProductComponents/DefaultSectionPromotions";
 import LowStockCounter from "@/Components/defaultProductComponents/LowStockCounter";
 import PreguntasF from "@/Components/defaultProductComponents/PreguntasF";
+import ReviewsSection from "@/Components/defaultProductComponents/ReviewsSection";
+import Sustentable from "@/Components/defaultProductComponents/Sustentable";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import GuestBuyLayout from "@/Layouts/GuestBuyLayout";
 import { usePage } from "@inertiajs/react";
@@ -79,14 +81,16 @@ export default function CepilloDucha({ producto }) {
                 <PreguntasF />
 
                 <DefaultSectionFeatures features={producto.features} />
-                <LowStockCounter stock={producto.stock}/>
+                <LowStockCounter stock={producto.stock} />
+
                 <DefaultSectionCompra
                     producto={producto}
                     selectedColors={selectedColors}
                     selectedPromotion={selectedPromotion}
                     user={auth.user}
                 />
-                <DefaultComprarAqui />
+                <ReviewsSection />
+                <Sustentable />
             </Layout>
         </>
     );

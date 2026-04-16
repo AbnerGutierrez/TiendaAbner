@@ -73,7 +73,7 @@ export default function Footer() {
 
                 {/* Texto footer */}
                 <div className="text-center text-sm text-gray-500">
-                    © {new Date().getFullYear()} Nebluzo.com :).{" "}
+                    © {new Date().getFullYear()} lunadev.mx :).{" "}
                     <a
                         className="font-medium hover:underline"
                         href="/politica_privacidad"

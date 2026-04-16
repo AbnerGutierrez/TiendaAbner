@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Link } from "@inertiajs/react";
 import DefaultComprarAqui from "../defaultProductComponents/DefaultComprarAqui";
 import { router } from "@inertiajs/react";
+import DefaultHostProducts from "../defaultProductComponents/DefaultHostProducts";
 export default function WelcomeS({ productos }) {
     return (
         <>
@@ -27,6 +28,9 @@ export default function WelcomeS({ productos }) {
                         seguro.
                     </motion.p>
                 </div>
+            </section>
+            <section>
+                <DefaultHostProducts/>
             </section>
 
             {/* BENEFICIOS */}

@@ -29,8 +29,11 @@ Route::get('/test-mail', function () {
 });
 
 Route::get('/', function () {
-    $productos = Product::with('images')->get();
-    return Inertia::render('Welcome', ['productos' => $productos]);
+    // $productos = Product::with('images')->get();
+    return Inertia::render('Welcome');
+    // $producto = Product::with(['colors', 'promotions', 'features', 'boxContent', 'images'])->find(2);
+    // // dd($producto->boxContent);
+    // return Inertia::render('Products/CepilloDucha', ['producto' => $producto]);
 });
 
 Route::get('/politica_privacidad', function () {
@@ -52,9 +55,9 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['au
 
 
 Route::controller(ProductController::class)->name('products.')->group(function () {
-
-    Route::get('/cepillo_ducha', 'showCepilloDucha')->name('showCepilloDucha');
     Route::get('/beeswax_food_wrap', 'show_beeswax_food_wrap')->name('show_beeswax_food_wrap');
+    Route::get('/gentle_removal', 'gentle_removal')->name('gentle_removal');
+    Route::get('/teeth_whitening', 'teethwhitening')->name('teeth-whitening');
 });
 
 Route::middleware('auth')->group(function () {

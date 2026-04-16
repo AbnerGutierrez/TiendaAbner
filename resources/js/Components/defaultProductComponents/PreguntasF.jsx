@@ -20,6 +20,14 @@ export default function PreguntasF() {
             question: "¿Mis pagos son seguros?",
             answer: "Sí, todos los pagos están protegidos con cifrado y plataformas de pago seguras.",
         },
+        {
+            question: "¿Mis pagos son seguros?",
+            answer: "Sí, todos los pagos están protegidos con cifrado y plataformas de pago seguras.",
+        },
+        {
+            question: "¿Mis pagos son seguros?",
+            answer: "Sí, todos los pagos están protegidos con cifrado y plataformas de pago seguras.",
+        },
     ];
 
     const toggle = (index) => {
@@ -27,9 +35,8 @@ export default function PreguntasF() {
     };
 
     return (
-        <section className="py-20 px-6 bg-black mb-16">
+        <section className="py-20 px-6 bg-black mb-16 h-[100vh]">
             <div className="max-w-3xl mx-auto">
-
                 <h2 className="text-3xl md:text-4xl font-bold text-center text-white mb-12">
                     Preguntas Frecuentes
                 </h2>
@@ -59,7 +66,6 @@ export default function PreguntasF() {
                         </div>
                     ))}
                 </div>
-
             </div>
         </section>
     );
