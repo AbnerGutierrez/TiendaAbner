@@ -99,7 +99,7 @@ export default function LandingProduct({ producto }) {
                     user={auth.user}
                 />
 
-                {producto.colorsv === 1 ? <Sustentable /> : <Sustentable2 />}
+                {producto.id === 1 ? <Sustentable /> : <Sustentable2 />}
             </Layout>
         </>
     );
