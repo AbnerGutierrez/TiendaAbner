@@ -265,9 +265,9 @@ class ProductController extends Controller
         // dd($producto->boxContent);
         return Inertia::render('Products/LandingProduct', ['producto' => $producto]);
     }
-    public function gentle_removal()
+    public function alfombrilla()
     {
-        $producto = Product::with(['colors', 'promotions', 'features', 'boxContent', 'images'])->find(4);
+        $producto = Product::with(['colors', 'promotions', 'features', 'boxContent', 'images'])->find(3);
         // dd($producto->boxContent);
         return Inertia::render('Products/LandingProduct', ['producto' => $producto]);
     }

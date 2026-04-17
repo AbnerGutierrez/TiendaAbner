@@ -9,8 +9,10 @@ import DefaultSectionFeatures from "@/Components/defaultProductComponents/Defaul
 import DefaultSectionPromotions from "@/Components/defaultProductComponents/DefaultSectionPromotions";
 import LowStockCounter from "@/Components/defaultProductComponents/LowStockCounter";
 import PreguntasF from "@/Components/defaultProductComponents/PreguntasF";
+import ReviewsSectionAlf from "@/Components/defaultProductComponents/ReviewSectionAlf";
 import ReviewsSection from "@/Components/defaultProductComponents/ReviewsSection";
 import Sustentable from "@/Components/defaultProductComponents/Sustentable";
+import Sustentable2 from "@/Components/defaultProductComponents/Sustentable2";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import GuestBuyLayout from "@/Layouts/GuestBuyLayout";
 import { usePage } from "@inertiajs/react";
@@ -58,7 +60,8 @@ export default function LandingProduct({ producto }) {
         <>
             <Layout user={auth.user}>
                 <DefaultHero producto={producto} />
-                <ReviewsSection />
+
+                {producto.id === 1 ? <ReviewsSection /> : <ReviewsSectionAlf />}
 
                 <DefaultSectionPromotions
                     promotions={producto.promotions}
@@ -72,7 +75,9 @@ export default function LandingProduct({ producto }) {
                         selectedPromotion={selectedPromotion}
                         onSelect={handleColorSelect}
                     />
-                ) : (<div className="py-11"></div>)}
+                ) : (
+                    <div className="py-11"></div>
+                )}
 
                 <DiscountBanner />
                 <DefaultSectionBoxContent
@@ -93,7 +98,8 @@ export default function LandingProduct({ producto }) {
                     selectedPromotion={selectedPromotion}
                     user={auth.user}
                 />
-                <Sustentable />
+
+                {producto.colorsv === 1 ? <Sustentable /> : <Sustentable2 />}
             </Layout>
         </>
     );

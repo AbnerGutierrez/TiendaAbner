@@ -1,23 +1,25 @@
 import dientes from "../../../../public/images/welcome/blanqueadorDientes.jpg";
 import envoltorio from "../../../../public/images/welcome/envoltorio.jpg";
 import spray from "../../../../public/images/welcome/spray.jpg";
+import alfombra from "../../../../public/images/welcome/alfombra.png";
 
 export default function DefaultHostProducts() {
     const topProducts = [
         {
             id: 1,
+            name: "Alfombrilla absorbente antideslizante",
+            price: 399,
+            image: alfombra,
+            url: "/alfombrilla",
+        },
+        {
+            id: 2,
             name: "Beeswax food wrap",
             price: 549,
             image: envoltorio,
             url: "/beeswax_food_wrap",
         },
-        // {
-        //     id: 2,
-        //     name: "Blanqueador dental",
-        //     price: 399,
-        //     image: dientes,
-        //     url: "/teeth_whitening",
-        // },
+
         // {
         //     id: 3,
         //     name: "Spray depilatorio suave",
