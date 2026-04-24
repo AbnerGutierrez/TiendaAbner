@@ -1,16 +1,16 @@
 import dientes from "../../../../public/images/welcome/blanqueadorDientes.jpg";
 import envoltorio from "../../../../public/images/welcome/envoltorio.jpg";
 import spray from "../../../../public/images/welcome/spray.jpg";
-import alfombra from "../../../../public/images/welcome/alfombra.png";
+import amplificador from "../../../../public/images/welcome/amplificador.png";
 
 export default function DefaultHostProducts() {
     const topProducts = [
         {
             id: 1,
-            name: "Alfombrilla absorbente antideslizante",
+            name: "Mini Amplificador Portatil",
             price: 399,
-            image: alfombra,
-            url: "/alfombrilla",
+            image: amplificador,
+            url: "/mini_amplificador",
         },
         {
             id: 2,
@@ -57,7 +57,7 @@ export default function DefaultHostProducts() {
                                 <img
                                     src={product.image}
                                     alt={product.name}
-                                    className="w-full h-40 object-cover rounded-xl mb-3"
+                                     className="w-full h-40 object-cover object-[center_30%] rounded-xl mb-3"
                                 />
                             </div>
 

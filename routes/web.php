@@ -59,7 +59,7 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['au
 Route::controller(ProductController::class)->name('products.')->group(function () {
     Route::get('/beeswax_food_wrap', 'show_beeswax_food_wrap')->name('show_beeswax_food_wrap');
     Route::get('/alfombrilla', 'alfombrilla')->name('alfombrilla');
-    Route::get('/teeth_whitening', 'teethwhitening')->name('teeth-whitening');
+    Route::get('/mini_amplificador', 'mini_amplificador')->name('mini_amplificador');
 
     Route::post('/soporte', 'send')->name('soporte.send');
 });

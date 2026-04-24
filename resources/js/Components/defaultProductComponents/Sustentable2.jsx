@@ -1,9 +1,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-    faDroplet,
-    faWind,
-    faShieldHalved,
-    faPalette,
+    faVolumeHigh,
+    faGuitar,
+    faShield,
+    faCompactDisc,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { motion } from "framer-motion";
@@ -11,28 +11,28 @@ import { motion } from "framer-motion";
 export default function Sustentable2() {
     const items = [
         {
-            title: "Alta absorción",
+            title: "Sonido Potente",
             description:
-                "Absorbe el agua en segundos, manteniendo el piso seco y limpio.",
-            icon: faDroplet,
+                "Disfruta un audio claro y con gran potencia a pesar de su tamaño compacto.",
+            icon: faVolumeHigh,
         },
         {
-            title: "Secado rápido",
+            title: "Portátil y Ligero",
             description:
-                "Gracias a sus materiales técnicos, se seca rápidamente sin acumular humedad.",
-            icon: faWind,
+                "Llévalo fácilmente a cualquier lugar gracias a su diseño compacto y práctico.",
+            icon: faGuitar,
         },
         {
-            title: "Antideslizante",
+            title: "Material Resistente",
             description:
-                "Base diseñada para evitar deslizamientos y brindar mayor seguridad.",
-            icon: faShieldHalved,
+                "Fabricado con materiales duraderos para acompañarte en cada ensayo o presentación.",
+            icon: faShield,
         },
         {
-            title: "Diseños únicos",
+            title: "Diseño Moderno",
             description:
-                "Estampados modernos y coloridos que decoran y dan vida a tu espacio.",
-            icon: faPalette,
+                "Acabado elegante y minimalista que combina perfectamente con cualquier setup musical.",
+            icon: faCompactDisc,
         },
     ];
 

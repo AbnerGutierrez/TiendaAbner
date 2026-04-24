@@ -5,42 +5,46 @@ import { useEffect, useState } from "react";
 export default function ReviewsSectionAlf() {
     const reviews = [
         {
-            name: "María G.",
+            name: "Daniel M.",
             comment:
-                "Me encantó, absorbe el agua súper rápido y mantiene mi baño siempre seco.",
+                "El sonido me sorprendió muchísimo para su tamaño. Perfecto para practicar en casa o llevarlo de viaje.",
             rating: 5,
         },
         {
             name: "Carlos R.",
             comment:
-                "Muy buena calidad y no se desliza. Perfecta para salir de la ducha.",
-            rating: 4,
+                "Muy ligero y fácil de transportar. Lo llevo en mi mochila junto con la guitarra sin problema.",
+            rating: 5,
         },
         {
-            name: "Ana L.",
+            name: "Andrea L.",
             comment:
-                "El diseño está hermoso y además seca en segundos. La recomiendo mucho.",
+                "La batería dura bastante y el audio es muy limpio. Excelente mini amplificador portátil.",
             rating: 5,
         },
         {
-            name: "Luis M.",
-            comment: "Es muy práctica, no guarda humedad ni malos olores.",
-            rating: 5,
-        },
-        {
-            name: "Sofía P.",
-            comment: "Me sorprendió lo rápido que seca, es súper cómoda.",
-            rating: 5,
-        },
-        {
-            name: "Jorge T.",
-            comment: "Antideslizante y absorbente, justo lo que necesitaba.",
+            name: "Luis T.",
+            comment:
+                "Ideal para practicar en cualquier lugar. Tiene muy buena potencia para ser tan compacto.",
             rating: 4,
         },
         {
-            name: "Laura C.",
-            comment: "Buen producto, fácil de limpiar y muy bonita.",
+            name: "Fernanda P.",
+            comment:
+                "Me encantó el diseño y la calidad de materiales. Se siente resistente y bien construido.",
             rating: 5,
+        },
+        {
+            name: "Jorge C.",
+            comment:
+                "Lo uso todos los días para ensayar y funciona excelente. Súper recomendado para guitarristas.",
+            rating: 5,
+        },
+        {
+            name: "Sofía G.",
+            comment:
+                "Muy práctico y fácil de usar. Solo conecté mi guitarra y empezó a sonar increíble.",
+            rating: 4,
         },
     ];
 

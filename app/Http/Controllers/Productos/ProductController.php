@@ -277,4 +277,10 @@ class ProductController extends Controller
         // dd($producto->boxContent);
         return Inertia::render('Products/LandingProduct', ['producto' => $producto]);
     }
+    public function mini_amplificador()
+    {
+        $producto = Product::with(['colors', 'promotions', 'features', 'boxContent', 'images'])->find(4);
+        // dd($producto->boxContent);
+        return Inertia::render('Products/LandingProduct', ['producto' => $producto]);
+    }
 }
